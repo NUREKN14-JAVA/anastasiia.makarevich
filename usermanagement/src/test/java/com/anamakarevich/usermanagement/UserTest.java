@@ -1,31 +1,27 @@
 package com.anamakarevich.usermanagement;
 
-import static org.junit.Assert.*;
-
 import java.util.Calendar;
 import java.util.Date;
 
 import org.junit.Before;
 import org.junit.Test;
 
-public class UserTest {
+import junit.framework.TestCase;
+
+public class UserTest extends TestCase{
 	private User user;
 	private Date dateOfBirthd;
 
 	@Before
-	public void setUp() throws Exception {
+	protected void setUp() throws Exception {
+		super.setUp();
 		user = new User();
 		
 		Calendar calendar = Calendar.getInstance();
 		calendar.set(1941, Calendar.MAY,24);
 		dateOfBirthd = calendar.getTime();
 	}
-/*
-	@Test
-	public void test() {
-		fail("Not yet implemented");
-	}
-*/
+	
 	@Test 
 	public void testGetFullName() {
 		user.setFirstName("Bob");
