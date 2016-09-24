@@ -1,13 +1,11 @@
 <project name="usermanagement" basedir="." default="test">
-	<property name="main-java-dir" value="${basedir}/src/main/java" />
-	<property name="test-java-dir" value="${basedir}/src/test/java" />
-	<property name="build-dir" value="${basedir}/bin" />
+	<property file="build.properties"/>
 
 	<target name="clean">
 		<delete dir="${build-dir}"/>
 	</target>
 
-	<target name="init">
+	<target name="init" depends="clean">
 		<mkdir dir="${build-dir}"/>
 	</target>
 
