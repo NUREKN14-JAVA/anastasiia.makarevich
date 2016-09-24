@@ -1,5 +1,5 @@
-<project name="usermanagement" basedir="." default="test">
-	<property file="build.properties"/>
+<project name="usermanagement" default="test">
+	<property file="${basedir}/build.properties"/>
 
 	<target name="clean">
 		<delete dir="${build-dir}"/>
