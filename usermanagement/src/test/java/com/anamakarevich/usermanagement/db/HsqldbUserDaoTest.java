@@ -23,23 +23,36 @@ public class HsqldbUserDaoTest extends TestCase {
 
     @Test
     public void testCreate() {
+        
         User user = new User();
         user.setFirstName("Mick");
         user.setLastName("Jagger");
+        
         Calendar calendar = Calendar.getInstance();
         calendar.set(1941, Calendar.MAY,24);
         Date dateOfBirthd = calendar.getTime();
         user.setDateOfBirthd(dateOfBirthd);
+        
+        // Check if the current id is null
         assertNull(user.getId());
+        
         try {
+            // Insert user into the database
             user = dao.create(user);
+            
             assertNotNull(user);
+            // Check that the the user id has been added successfully
             assertNotNull(user.getId());
-            } catch (DatabaseException e) {
-             //TODO Auto-generated catch block
-                e.printStackTrace();
-                fail(e.toString());
-            }
+        } catch (DatabaseException e) {
+            
+            e.printStackTrace();
+            fail(e.toString());
+        }
+
+            
+            
     }
+            
+    
 
 }

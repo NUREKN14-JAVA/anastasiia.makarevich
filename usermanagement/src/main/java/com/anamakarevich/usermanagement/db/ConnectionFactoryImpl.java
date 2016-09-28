@@ -13,7 +13,8 @@ public class ConnectionFactoryImpl implements ConnectionFactory {
 
     @Override
     public Connection createConnection() throws DatabaseException {
-        driver=" org.hsqldb.jdbcDriver"; 
+        Connection connection;
+        driver="org.hsqldb.jdbcDriver"; 
         url="jdbc:hsqldb:file:db/usermanagement"; 
         user="sa"; 
         password="";
@@ -26,14 +27,14 @@ public class ConnectionFactoryImpl implements ConnectionFactory {
             }		
         
         try {
-            DriverManager.getConnection(url, user, password);
+            connection = DriverManager.getConnection(url, user, password);
             } catch (SQLException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
                 throw new DatabaseException();
                 }
         	// TODO Auto-generated method stub
-        return null;
+        return connection;
         }
 
 }
