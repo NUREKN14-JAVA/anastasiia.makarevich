@@ -6,34 +6,41 @@ import java.sql.SQLException;
 
 public class ConnectionFactoryImpl implements ConnectionFactory {
 
-    private String driver;
+    private String databaseDriver;
     private String url;
     private String user;
     private String password;
 
+    public ConnectionFactoryImpl(String databaseDriver, String url, String user, String password) {
+        
+        this.databaseDriver = databaseDriver;
+        this.url = url;
+        this.user = user;
+        this.password = password;
+    }
+
     @Override
     public Connection createConnection() throws DatabaseException {
+        
         Connection connection;
-        driver="org.hsqldb.jdbcDriver"; 
-        url="jdbc:hsqldb:file:db/usermanagement"; 
-        user="sa"; 
-        password="";
+        
         try {
-            Class.forName(driver);
+            // Load class and run its static initializers that will register the driver
+            Class.forName(databaseDriver);
         } catch (ClassNotFoundException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            System.out.println("ERROR: failed to load HSQLDB JDBC driver.");
+            e.printStackTrace();            
             throw new RuntimeException();
             }		
         
         try {
+            // Get connection to database
             connection = DriverManager.getConnection(url, user, password);
             } catch (SQLException e) {
-                // TODO Auto-generated catch block
+                System.out.println("ERROR: failed to get connection to HSQLDB.");
                 e.printStackTrace();
                 throw new DatabaseException();
                 }
-        	// TODO Auto-generated method stub
         return connection;
         }
 

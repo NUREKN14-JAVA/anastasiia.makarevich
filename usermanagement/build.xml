@@ -1,7 +1,6 @@
 
 <project name="usermanagement" default="test" basedir=".">
     <property file="${basedir}/build.properties"/>
-
     <target name="clean">
         <delete dir="${build-dir}"/>
     </target>

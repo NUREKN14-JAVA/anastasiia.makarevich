@@ -1,5 +1,6 @@
 package com.anamakarevich.usermanagement;
 
+import java.time.LocalDate;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -12,7 +13,7 @@ public class UserTest extends TestCase{
     
     private User user;
     
-    private Date dateOfBirthd;
+    private LocalDate dateOfBirthd;
 
     @Before
     protected void setUp() throws Exception {
@@ -21,11 +22,8 @@ public class UserTest extends TestCase{
         
         user = new User();
         
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(1941, Calendar.MAY,24);
-        
-        dateOfBirthd = calendar.getTime();
-        
+        dateOfBirthd = LocalDate.of(1941, 5, 24); 
+                
         }
 
     @Test 
@@ -43,13 +41,9 @@ public class UserTest extends TestCase{
 
         user.setDateOfBirthd(dateOfBirthd);
         
-        Calendar c2 = Calendar.getInstance();
-        c2.setTime(new Date());		
+        int correctAnswer = LocalDate.now().getYear()-dateOfBirthd.getYear();
         
-        Calendar c3 = Calendar.getInstance();
-        c3.setTime(user.getDateOfBirthd());
-        
-        assertEquals(c2.get(Calendar.YEAR) - c3.get(Calendar.YEAR), user.getAge());
+        assertEquals(correctAnswer, user.getAge());
         
         }
 

@@ -1,7 +1,6 @@
 package com.anamakarevich.usermanagement;
 
-import java.util.Calendar;
-import java.util.Date;
+import java.time.LocalDate;
 
 /**
  * @author ana_makarevich
@@ -14,7 +13,8 @@ public class User {
     private String firstName;
     private String lastName;
     
-    private Date dateOfBirthd;
+    //private Date dateOfBirthd;
+    private LocalDate dateOfBirthd;
     
     public Long getId() {
         return id;
@@ -40,16 +40,16 @@ public class User {
         this.lastName = lastName;
         }
     
-    public Date getDateOfBirthd() {
+    public LocalDate getDateOfBirthd() {
         return dateOfBirthd;
         }
     
-    public void setDateOfBirthd(Date dateOfBirthd) {
+    public void setDateOfBirthd(LocalDate dateOfBirthd) {
         this.dateOfBirthd = dateOfBirthd;
         }
     
     /**
-     * 
+     * Builds the full name of the person 
      * @return concatenation of last name and first name
      */
     public Object getFullName() {
@@ -57,19 +57,12 @@ public class User {
         }
     
     /**
-     * 
-     * @return difference between the current year and the day of birth of the user
+     * Calculates the age of the user
+     * @return the age of the user
      */
     public int getAge() {
-        
-        Calendar calendar = Calendar.getInstance();
-        
-        calendar.setTime(new Date());
-        int currentYear = calendar.get(Calendar.YEAR);
-        
-        calendar.setTime(getDateOfBirthd());
-        int year = calendar.get(Calendar.YEAR);
-        
+        int currentYear = LocalDate.now().getYear();
+        int year = dateOfBirthd.getYear();
         return currentYear - year;
         
         }
