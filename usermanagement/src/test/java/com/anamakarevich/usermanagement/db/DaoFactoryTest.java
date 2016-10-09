@@ -1,14 +1,15 @@
 package com.anamakarevich.usermanagement.db;
 
-import static org.junit.Assert.*;
-
 import org.junit.Before;
 import org.junit.Test;
 
-public class DaoFactoryTest {
+import junit.framework.TestCase;
+
+public class DaoFactoryTest extends TestCase {
 
     @Before
     public void setUp() throws Exception {
+        super.setUp();
     }
 
     @Test

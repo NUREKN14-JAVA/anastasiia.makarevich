@@ -1,34 +1,69 @@
 
 <project name="usermanagement" default="test" basedir=".">
     <property file="${basedir}/build.properties"/>
+	
+	<!-- clean the build directory so that we don't mix up old build with the new one -->
     <target name="clean">
-        <delete dir="${build-dir}"/>
+        <delete dir="${build-dir}" failonerror="no"/>
     </target>
-    <target name="init" depends="clean">
+	
+	<!-- initialize the directories -->
+    <target name="init" depends = "clean">
+    	<!-- main build directory -->
         <mkdir dir="${build-dir}"/>
+    	<!-- directory for the compiled classes -->
+    	<mkdir dir="${classes-dir}"/>    
     </target>
 
-    <target name="compile">
-        <javac srcdir="${main-java-dir}"
-            destdir="${build-dir}"
-            includeantruntime="false"
-     />
+	<!-- compile classes -->
+    <target name="compile" depends="init">
+        <javac srcdir="${main-java-dir}" destdir="${classes-dir}" includeantruntime="true">
+        	<!-- include libraries -->
+        	<classpath>
+        	 	<fileset dir="${lib-dir}" />
+        	 </classpath>
+        </javac>
+    	<!-- copy resources -->
+    	<copy todir="${classes-dir}">
+    		<fileset dir="${main-resources-dir}">
+    			<include name="**/*.properties"/>
+    			<include name="**/*.xml"/>   
+    		</fileset>
+    	</copy>  
     </target>
 
+	<!-- compile tests -->
     <target name="test-compile" depends="compile">
-        <javac srcdir="${test-java-dir}"
-            destdir="${build-dir}"
-            includeantruntime="false"
-            />
+        <javac srcdir="${test-java-dir}" destdir="${classes-dir}" includeantruntime="true">
+        	<classpath>
+        		<fileset dir="${lib-dir}" />
+        	</classpath>    
+        </javac>
+    	<!-- copy resources -->
+    	<copy todir="${classes-dir}">
+    	 	<fileset dir="${test-resources-dir}">
+    	 		<include name="**/*.properties"/>
+    	 		<include name="**/*.xml"/>   
+    	 	</fileset>
+    	</copy>    
     </target>
 
     <target name="test" depends="test-compile" description="description">
+    	<!-- create directory for the test results -->
+        <mkdir dir="${test-result-dir}"/>      
         <junit>
             <classpath>			
-                <pathelement location="${build-dir}"/>
-                </classpath>
+            	<pathelement location="${classes-dir}"/>
+            	<fileset dir="${lib-dir}" />
+            </classpath>
             <formatter type="plain"/>
-            <test name="com.anamakarevich.usermanagement.UserTest"></test>
+        	<!-- process test as a batch -->
+        	<batchtest todir="${test-result-dir}">
+        	    <fileset dir="${test-java-dir}"> 
+        	        <include name ="**/*Test.java"/>
+        		</fileset>
+        	</batchtest>
+            <!-- <test name="com.anamakarevich.usermanagement.UserTest"></test>-->
         </junit>
     </target>
 
