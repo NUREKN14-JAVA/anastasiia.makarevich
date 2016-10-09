@@ -1,9 +1,7 @@
 package com.anamakarevich.usermanagement.db;
 
 import java.time.LocalDate;
-import java.util.Calendar;
 import java.util.Collection;
-import java.util.Date;
 
 import org.dbunit.DatabaseTestCase;
 import org.dbunit.database.DatabaseConnection;
@@ -138,7 +136,6 @@ public class HsqldbUserDaoTest extends DatabaseTestCase {
             assertEquals("Date of birth update failed", newDate, user.getDateOfBirthd());
             
         } catch (DatabaseException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
     }
@@ -172,18 +169,5 @@ public class HsqldbUserDaoTest extends DatabaseTestCase {
         return user;
     }
     
-    /**
-     * Creates a date instance for tests
-     * @param day - day of month starting from 1
-     * @param month - month index starting from 0 for January
-     * @param year
-     * @return Date object initialized with the given parameters
-     */
-    public Date getDate(int day, int month, int year) {
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(year, month, day);
-        Date date = calendar.getTime();
-        return date;
-    }
 
 }
