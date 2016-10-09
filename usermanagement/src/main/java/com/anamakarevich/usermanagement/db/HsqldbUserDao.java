@@ -16,15 +16,10 @@ class HsqldbUserDao implements UserDao {
 
     ConnectionFactory connectionFactory;
     
-    /** getter method for the connectionFactory, can return null
-     */
     public ConnectionFactory getConnectionFactory() {
         return connectionFactory;
     }
     
-    /**
-     * setter method for the connectionFactory
-     */
     public void setConnectionFactory(ConnectionFactory connectionFactory){
         this.connectionFactory = connectionFactory;
     }
@@ -121,7 +116,27 @@ class HsqldbUserDao implements UserDao {
 
     @Override
     public void delete(User user) throws DatabaseException {
-        // TODO Auto-generated method stub
+        // connect to the database
+        Connection connection = connectionFactory.createConnection();
+        
+        String deleteQuerySQL = "DELETE FROM users WHERE id = ?";
+        Long id = user.getId();
+        PreparedStatement preparedStatement;
+        
+        try {
+            preparedStatement = connection.prepareStatement(deleteQuerySQL);
+            preparedStatement.setLong(1, id);
+            int numberOfRowsDeleted = preparedStatement.executeUpdate();
+            if (numberOfRowsDeleted != 1) {
+                throw new DatabaseException("Delete failed: " + numberOfRowsDeleted + " rows were deleted");
+            }
+            preparedStatement.close();
+            connection.close();
+            
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
 
         }
     

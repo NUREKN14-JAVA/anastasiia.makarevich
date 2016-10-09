@@ -1,8 +1,6 @@
 package com.anamakarevich.usermanagement;
 
 import java.time.LocalDate;
-import java.util.Calendar;
-import java.util.Date;
 
 import org.junit.Before;
 import org.junit.Test;

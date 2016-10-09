@@ -67,15 +67,56 @@ public class HsqldbUserDaoTest extends DatabaseTestCase {
     }
     
     @Test
-    public void testFind() {
+    public void testFind_ValidId() {
         try {
             User user1 = getTestUser();
             user1 = dao.create(user1);
             User user = dao.find(user1.getId());
-            assertEquals("Wrong id",user.getId(),user1.getId());
+            assertEquals("Found wrong user",user.getId(),user1.getId());
         } catch (DatabaseException e) {
             e.printStackTrace();
         }
+    }
+    
+    
+    @Test
+    public void testDelete() {
+        User user = getTestUser();
+        Long id;
+        try {
+            user = dao.create(user);
+        } catch (DatabaseException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            dao.delete(user);
+        } catch (DatabaseException e) {
+            e.printStackTrace();
+        }
+
+        id = user.getId();
+        try {
+            user = dao.find(id);
+            fail("User was not deleted");
+        } catch (DatabaseException e) {
+            assertEquals(e.getMessage().toString(), "User with id" + id + " is not found");
+        }
+        
+    }
+    
+    @Test
+    public void testFind_InvalidId() {
+        Long id = 666L;
+        
+        try {
+            dao.find(id);
+            fail("Expected DatabaseException: User with id" + id + " is not found. Got a user instead");
+        } catch (DatabaseException e) {
+            assertEquals(e.getMessage().toString(), "User with id" + id + " is not found");
+            
+        }
+        
     }
     
     @Test
@@ -92,9 +133,9 @@ public class HsqldbUserDaoTest extends DatabaseTestCase {
             
             dao.update(user);
             user = dao.find(user.getId());
-            assertEquals(newFirstName,user.getFirstName());
-            assertEquals(newLastName, user.getLastName());
-            assertEquals(newDate,user.getDateOfBirthd());
+            assertEquals("First name update failed", newFirstName, user.getFirstName());
+            assertEquals("Last name update failed", newLastName, user.getLastName());
+            assertEquals("Date of birth update failed", newDate, user.getDateOfBirthd());
             
         } catch (DatabaseException e) {
             // TODO Auto-generated catch block
@@ -116,7 +157,6 @@ public class HsqldbUserDaoTest extends DatabaseTestCase {
         IDataSet dataSet = new XmlDataSet(getClass().
                 getClassLoader().
                 getResourceAsStream("usersDataSet.xml"));
-        // TODO Auto-generated method stub
         return dataSet;
     }
     
