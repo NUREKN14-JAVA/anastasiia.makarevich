@@ -38,12 +38,7 @@ class HsqldbUserDao implements UserDao {
         this.connectionFactory = connectionFactory;
         
         }
-    
-   /**
-    * Creates new row in the database based on the User instance
-    * @param user - not null, id field must be null, 
-    * @return user - id field is not null
-    */
+
    @Override
     public User create(User user) throws DatabaseException {
 
@@ -88,10 +83,6 @@ class HsqldbUserDao implements UserDao {
         return user;
         }
 
-   /**
-    * Updates the user data in the database 
-    * @param user - user instance to be updated, id is not null
-    */
     @Override
     public void update(User user) throws DatabaseException {
         
@@ -126,8 +117,7 @@ class HsqldbUserDao implements UserDao {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
-        }
+    }
 
     @Override
     public void delete(User user) throws DatabaseException {
@@ -135,21 +125,24 @@ class HsqldbUserDao implements UserDao {
 
         }
     
-    /**
-     * 
-     */
     @Override
     public User find(Long id) throws DatabaseException {
+        
         Connection connection = connectionFactory.createConnection();
+        String findQuerySQL =  "SELECT id, firstname, lastname, dateofbirth FROM users WHERE id=?";
+        PreparedStatement preparedStatement;
+        // TODO: think out of a better way to return nothing
+        User user = null;
+        
         try {
-            String findQuerySQL =  "SELECT id, firstname, lastname, dateofbirth FROM users WHERE id=?";
-            PreparedStatement preparedStatement = connection.prepareStatement(findQuerySQL);
+            
+            preparedStatement = connection.prepareStatement(findQuerySQL);
             preparedStatement.setLong(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
             if (!resultSet.next()) {
                 throw new DatabaseException("User with id" + id + " is not found");
             }
-            User user = new User();
+            user = new User();
             user.setId(resultSet.getLong(1));
             user.setFirstName(resultSet.getString(2));
             user.setLastName(resultSet.getString(3));
@@ -157,18 +150,13 @@ class HsqldbUserDao implements UserDao {
             
             preparedStatement.close();
             connection.close();
-            return user;
             
         } catch (SQLException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
-        return null;
+        return user;
         }
 
-    /**
-     * Note: can return null
-     */
     @Override
     public Collection<?> findAll() throws DatabaseException {
         
