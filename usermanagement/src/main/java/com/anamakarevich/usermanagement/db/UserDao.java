@@ -57,4 +57,5 @@ public interface UserDao {
      * @param connectionFactory
      */
     void setConnectionFactory(ConnectionFactory connectionFactory);
+    
 }

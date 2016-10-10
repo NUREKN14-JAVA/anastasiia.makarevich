@@ -20,10 +20,12 @@ public class HsqldbUserDaoTest extends DatabaseTestCase {
     @Before
     protected void setUp() throws Exception {
         super.setUp();
+        /*
         connectionFactory = new ConnectionFactoryImpl("org.hsqldb.jdbcDriver", 
                 "jdbc:hsqldb:file:db/usermanagement", 
                 "sa",
                 "");
+                */
         dao = new HsqldbUserDao(connectionFactory);
         }
 
@@ -56,10 +58,11 @@ public class HsqldbUserDaoTest extends DatabaseTestCase {
         try {
             Collection<?> allUsers = dao.findAll();
             assertNotNull("Collection is null", allUsers);
-            assertEquals("Collection size.",2,allUsers.size());
+            assertEquals("Collection size is incorrect.",2,allUsers.size());
         } catch (DatabaseException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
+            fail(e.toString());
         }
         
     }
@@ -73,6 +76,7 @@ public class HsqldbUserDaoTest extends DatabaseTestCase {
             assertEquals("Found wrong user",user.getId(),user1.getId());
         } catch (DatabaseException e) {
             e.printStackTrace();
+            fail(e.toString());
         }
     }
     
@@ -137,6 +141,7 @@ public class HsqldbUserDaoTest extends DatabaseTestCase {
             
         } catch (DatabaseException e) {
             e.printStackTrace();
+            fail(e.toString());
         }
     }
     
