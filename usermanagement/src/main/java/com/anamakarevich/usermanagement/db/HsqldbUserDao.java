@@ -24,16 +24,14 @@ class HsqldbUserDao implements UserDao {
         this.connectionFactory = connectionFactory;
     }
 
-    public HsqldbUserDao() {
-
-        }
-
     public HsqldbUserDao(ConnectionFactory connectionFactory) {
 
         this.connectionFactory = connectionFactory;
         
         }
-
+    public HsqldbUserDao() {
+        
+        }
    @Override
     public User create(User user) throws DatabaseException {
 

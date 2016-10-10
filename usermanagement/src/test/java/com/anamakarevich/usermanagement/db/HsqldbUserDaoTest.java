@@ -145,7 +145,7 @@ public class HsqldbUserDaoTest extends DatabaseTestCase {
     @Override
     protected IDatabaseConnection getConnection() throws Exception {
         connectionFactory = new ConnectionFactoryImpl("org.hsqldb.jdbcDriver", 
-                "jdbc:hsqldb:file:db/usermanagement;hsqldb.lock_file=false;hsqldb.nio_data_file=false", 
+                "jdbc:hsqldb:file:db/usermanagement;hsqldb.nio_data_file=false;hsqldb.lock_file=false", 
                 "sa",
                 "");
         return new DatabaseConnection(connectionFactory.createConnection());
