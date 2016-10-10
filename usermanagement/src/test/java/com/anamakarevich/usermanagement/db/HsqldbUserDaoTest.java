@@ -120,9 +120,8 @@ public class HsqldbUserDaoTest extends DatabaseTestCase {
     
     @Test
     public void testUpdate() {
-        User user = getTestUser();
         try {
-            user = dao.create(user);
+            User user = dao.find(1L);
             String newFirstName = user.getFirstName() + "N";
             String newLastName = user.getLastName() + "N";
             LocalDate newDate = LocalDate.of(1942, 4, 13); 
