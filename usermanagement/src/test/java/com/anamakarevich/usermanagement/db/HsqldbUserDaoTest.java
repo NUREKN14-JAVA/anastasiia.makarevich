@@ -20,12 +20,6 @@ public class HsqldbUserDaoTest extends DatabaseTestCase {
     @Before
     protected void setUp() throws Exception {
         super.setUp();
-        /*
-        connectionFactory = new ConnectionFactoryImpl("org.hsqldb.jdbcDriver", 
-                "jdbc:hsqldb:file:db/usermanagement", 
-                "sa",
-                "");
-                */
         dao = new HsqldbUserDao(connectionFactory);
         }
 
@@ -70,10 +64,13 @@ public class HsqldbUserDaoTest extends DatabaseTestCase {
     @Test
     public void testFind_ValidId() {
         try {
-            User user1 = getTestUser();
-            user1 = dao.create(user1);
-            User user = dao.find(user1.getId());
-            assertEquals("Found wrong user",user.getId(),user1.getId());
+            User user = dao.find(1L);
+            //User user1 = getTestUser();
+            //user1 = dao.create(user1);
+            //User user = dao.find(user1.getId());
+            assertEquals("Found wrong user", "Mick",user.getFirstName());
+            assertEquals("Found wrong user", "Jagger",user.getLastName());
+            assertEquals("Found wrong user", LocalDate.of(1943, 7, 26),user.getDateOfBirthd());
         } catch (DatabaseException e) {
             e.printStackTrace();
             fail(e.toString());
@@ -148,7 +145,7 @@ public class HsqldbUserDaoTest extends DatabaseTestCase {
     @Override
     protected IDatabaseConnection getConnection() throws Exception {
         connectionFactory = new ConnectionFactoryImpl("org.hsqldb.jdbcDriver", 
-                "jdbc:hsqldb:file:db/usermanagement", 
+                "jdbc:hsqldb:file:db/usermanagement;hsqldb.lock_file=false;hsqldb.nio_data_file=false", 
                 "sa",
                 "");
         return new DatabaseConnection(connectionFactory.createConnection());
@@ -174,5 +171,4 @@ public class HsqldbUserDaoTest extends DatabaseTestCase {
         return user;
     }
     
-
 }

@@ -8,7 +8,7 @@
     </target>
 	
 	<!-- initialize the directories -->
-    <target name="init">
+    <target name="init" depends="clean">
     	<!-- main build directory -->
         <mkdir dir="${build-dir}"/>
     	<!-- directory for the compiled classes -->
