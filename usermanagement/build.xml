@@ -58,7 +58,7 @@
             </classpath>
             <formatter type="plain"/>
         	<!-- process test as a batch -->
-        	<batchtest todir="${test-result-dir}">
+        	<batchtest todir="${test-result-dir}" fork="yes">
         	    <fileset dir="${test-java-dir}"> 
         	        <include name ="**/*Test.java"/>
         		</fileset>

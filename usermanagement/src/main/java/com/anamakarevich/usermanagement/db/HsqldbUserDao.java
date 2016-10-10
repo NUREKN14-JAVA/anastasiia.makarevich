@@ -153,8 +153,6 @@ class HsqldbUserDao implements UserDao {
             preparedStatement = connection.prepareStatement(findQuerySQL);
             preparedStatement.setLong(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
-            preparedStatement.close();
-            connection.close();
             if (!resultSet.next()) {
                 throw new DatabaseException("User with id" + id + " is not found");
             }
@@ -163,7 +161,9 @@ class HsqldbUserDao implements UserDao {
             user.setFirstName(resultSet.getString(2));
             user.setLastName(resultSet.getString(3));
             user.setDateOfBirthd(resultSet.getDate(4).toLocalDate());
-            
+            resultSet.close();
+            preparedStatement.close();
+            connection.close();
            
             
         } catch (SQLException e) {
@@ -189,6 +189,7 @@ class HsqldbUserDao implements UserDao {
                 user.setDateOfBirthd(allUsers.getDate(4).toLocalDate());
                 result.add(user);
             }
+            allUsers.close();
             statement.close();
             connection.close();
             

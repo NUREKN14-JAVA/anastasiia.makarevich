@@ -170,5 +170,6 @@ public class HsqldbUserDaoTest extends DatabaseTestCase {
         user.setDateOfBirthd(LocalDate.of(1941,4,24));
         return user;
     }
+   
     
 }
