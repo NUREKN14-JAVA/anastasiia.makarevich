@@ -26,7 +26,10 @@ public class HsqldbUserDaoTest extends DatabaseTestCase {
     @Test
     public void testCreate() {
         
-        User user = getTestUser();
+        User user = new User();
+        user.setFirstName("Andy");
+        user.setLastName("Warhall");
+        user.setDateOfBirthd(LocalDate.of(1931, 7, 26));
         
         // Check if the current id is null
         assertNull(user.getId());
@@ -80,23 +83,21 @@ public class HsqldbUserDaoTest extends DatabaseTestCase {
     
     @Test
     public void testDelete() {
-        User user = getTestUser();
-        Long id;
-        try {
-            user = dao.create(user);
-        } catch (DatabaseException e) {
-            e.printStackTrace();
-        }
+        
+        User user = new User();
+        user.setId(1L);
+        user.setFirstName("Mick");
+        user.setLastName("Jagger");
+        user.setDateOfBirthd(LocalDate.of(1943, 7, 26));
 
         try {
             dao.delete(user);
         } catch (DatabaseException e) {
             e.printStackTrace();
         }
-
-        id = user.getId();
+        Long id = 1L;
         try {
-            user = dao.find(id);
+            user = dao.find(1L);
             fail("User was not deleted");
         } catch (DatabaseException e) {
             assertEquals(e.getMessage().toString(), "User with id" + id + " is not found");
@@ -121,10 +122,13 @@ public class HsqldbUserDaoTest extends DatabaseTestCase {
     @Test
     public void testUpdate() {
         try {
-            User user = dao.find(1L);
-            String newFirstName = user.getFirstName() + "N";
-            String newLastName = user.getLastName() + "N";
-            LocalDate newDate = LocalDate.of(1942, 4, 13); 
+            User user = new User();
+            user.setId(1L);
+            
+            String newFirstName = "Jack";
+            String newLastName = "Magger";
+            LocalDate newDate = LocalDate.of(1941, 4, 13); 
+            
             user.setFirstName(newFirstName);
             user.setLastName(newLastName);
             user.setDateOfBirthd(newDate);
@@ -164,6 +168,7 @@ public class HsqldbUserDaoTest extends DatabaseTestCase {
      */
     public User getTestUser() {
         User user = new User();
+        user.setId(1L);
         user.setFirstName("Mick");
         user.setLastName("Jagger");
         user.setDateOfBirthd(LocalDate.of(1941,4,24));

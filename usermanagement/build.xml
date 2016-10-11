@@ -4,7 +4,7 @@
 	
 	<!-- clean the build directory so that we don't mix up old build with the new one -->
     <target name="clean">
-        <delete dir="${build-dir}" failonerror="no"/>
+        <delete dir="${build-dir}" failonerror="false"/>
     </target>
 	
 	<!-- initialize the directories -->
@@ -12,7 +12,7 @@
     	<!-- main build directory -->
         <mkdir dir="${build-dir}"/>
     	<!-- directory for the compiled classes -->
-    	<mkdir dir="${classes-dir}"/>    
+    	<!-- <mkdir dir="${classes-dir}"/> -->    
     </target>
 
 	<!-- compile classes -->
@@ -58,7 +58,7 @@
             </classpath>
             <formatter type="plain"/>
         	<!-- process test as a batch -->
-        	<batchtest todir="${test-result-dir}" fork="yes">
+        	<batchtest todir="${test-result-dir}" fork="true">
         	    <fileset dir="${test-java-dir}"> 
         	        <include name ="**/*Test.java"/>
         		</fileset>

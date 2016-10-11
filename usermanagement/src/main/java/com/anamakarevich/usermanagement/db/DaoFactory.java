@@ -20,8 +20,8 @@ public class DaoFactory {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-        
     }
+    
     private ConnectionFactory getConnectionFactory() {
         String databaseDriver=properties.getProperty("connection.drive");//"org.hsqldb.jdbcDriver"; 
         String url=properties.getProperty("connection.url");
