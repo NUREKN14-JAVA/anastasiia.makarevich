@@ -14,6 +14,12 @@ import com.anamakarevich.usermanagement.User;
 
 class HsqldbUserDao implements UserDao {
 
+    // Constants for SQL queries
+    private static final String INSERT_QUERY = "INSERT INTO users (firstname, lastname, dateofbirth) VALUES (?, ?, ?)";
+    private static final String UPDATE_QUERY = "UPDATE users SET firstname=?, lastname=?, dateofbirth=? WHERE id=?";
+    private static final String DELETE_QUERY = "DELETE FROM users WHERE id = ?";
+    private static final String FIND_QUERY =  "SELECT id, firstname, lastname, dateofbirth FROM users WHERE id=?";
+    private static final String SELECT_QUERY = "SELECT id, firstname, lastname, dateofbirth FROM users";
     ConnectionFactory connectionFactory;
     
     public ConnectionFactory getConnectionFactory() {
@@ -37,11 +43,9 @@ class HsqldbUserDao implements UserDao {
 
        Connection connection = connectionFactory.createConnection();
        
-       String insertQuerySQL = "INSERT INTO users (firstname, lastname, dateofbirth) VALUES (?, ?, ?)";
-       
         try {
             // convert query string into prepared statement
-            PreparedStatement preparedStatement = connection.prepareStatement(insertQuerySQL);
+            PreparedStatement preparedStatement = connection.prepareStatement(INSERT_QUERY);
             preparedStatement.setString(1, user.getFirstName());
             preparedStatement.setString(2, user.getLastName());
             preparedStatement.setDate(3, Date.valueOf(user.getDateOfBirthd()));
@@ -87,15 +91,12 @@ class HsqldbUserDao implements UserDao {
         Long id = user.getId();
         assert id != null;
         
-        // create query
-        String updateQuerySQL = "UPDATE users SET firstname=?, lastname=?, dateofbirth=? WHERE id=?";
-        
-        // convert it into a prepared statement
+        // convert sql query into a prepared statement
         PreparedStatement preparedStatement;
         
         try {
             
-            preparedStatement = connection.prepareStatement(updateQuerySQL);
+            preparedStatement = connection.prepareStatement(UPDATE_QUERY);
             preparedStatement.setString(1, user.getFirstName());
             preparedStatement.setString(2, user.getLastName());
             preparedStatement.setDate(3, Date.valueOf(user.getDateOfBirthd()));
@@ -120,12 +121,12 @@ class HsqldbUserDao implements UserDao {
         // connect to the database
         Connection connection = connectionFactory.createConnection();
         
-        String deleteQuerySQL = "DELETE FROM users WHERE id = ?";
+        
         Long id = user.getId();
         PreparedStatement preparedStatement;
         
         try {
-            preparedStatement = connection.prepareStatement(deleteQuerySQL);
+            preparedStatement = connection.prepareStatement(DELETE_QUERY);
             preparedStatement.setLong(1, id);
             int numberOfRowsDeleted = preparedStatement.executeUpdate();
             if (numberOfRowsDeleted != 1) {
@@ -145,14 +146,14 @@ class HsqldbUserDao implements UserDao {
     public User find(Long id) throws DatabaseException {
         
         Connection connection = connectionFactory.createConnection();
-        String findQuerySQL =  "SELECT id, firstname, lastname, dateofbirth FROM users WHERE id=?";
+        
         PreparedStatement preparedStatement;
         // TODO: think out of a better way to return nothing
         User user = null;
         
         try {
             
-            preparedStatement = connection.prepareStatement(findQuerySQL);
+            preparedStatement = connection.prepareStatement(FIND_QUERY);
             preparedStatement.setLong(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
             if (!resultSet.next()) {
@@ -178,11 +179,11 @@ class HsqldbUserDao implements UserDao {
     public Collection<?> findAll() throws DatabaseException {
         
         Connection connection = connectionFactory.createConnection();
-        String selectQuerySQL = "SELECT id, firstname, lastname, dateofbirth FROM users";
+        
         Collection<User> result = new LinkedList<User>();
         try {
             Statement statement = connection.createStatement();
-            ResultSet allUsers = statement.executeQuery(selectQuerySQL);
+            ResultSet allUsers = statement.executeQuery(SELECT_QUERY);
             while (allUsers.next()) {
                 User user = new User();
                 user.setId(allUsers.getLong(1));
