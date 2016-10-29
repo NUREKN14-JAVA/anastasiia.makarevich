@@ -33,14 +33,13 @@ public class BrowsePanel extends JPanel implements ActionListener {
         
     }
 
-    private Component getButtonPanel() {
+    private JPanel getButtonPanel() {
         if (buttonPanel == null) {
             buttonPanel = new JPanel();
-            buttonPanel.setName("buttonPanel");
-            add(getAddButton());
-            add(getEditButton());
-            add(getDeleteButton());
-            add(getDetailsButton());
+            buttonPanel.add(getAddButton());
+            buttonPanel.add(getEditButton());
+            buttonPanel.add(getDeleteButton());
+            buttonPanel.add(getDetailsButton());
         }
         return buttonPanel;
     }

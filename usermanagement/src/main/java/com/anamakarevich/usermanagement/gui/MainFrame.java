@@ -33,7 +33,7 @@ public class MainFrame extends JFrame {
         
     }
     
-    private Component getBrowsePanel() {
+    private JPanel getBrowsePanel() {
         if (browsePanel == null) {
             browsePanel = new BrowsePanel(this);
             // TODO: decide where to put the browse panel
