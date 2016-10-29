@@ -83,7 +83,9 @@ class HsqldbUserDao implements UserDao {
         Connection connection = connectionFactory.createConnection();
         
         // Get id to work with
+        
         Long id = user.getId();
+        assert id != null;
         
         // create query
         String updateQuerySQL = "UPDATE users SET firstname=?, lastname=?, dateofbirth=? WHERE id=?";

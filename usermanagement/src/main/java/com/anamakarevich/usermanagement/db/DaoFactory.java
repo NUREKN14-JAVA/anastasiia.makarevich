@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.util.Properties;
 
 public class DaoFactory {
-    private final Properties properties;
+    private Properties properties;
     
     private final static DaoFactory INSTANCE = new DaoFactory();
     
@@ -22,14 +22,12 @@ public class DaoFactory {
         }
     }
     
+    public void init(Properties properties) {
+        this.properties = properties;
+    }
+    
     private ConnectionFactory getConnectionFactory() {
-        String databaseDriver=properties.getProperty("connection.drive");//"org.hsqldb.jdbcDriver"; 
-        String url=properties.getProperty("connection.url");
-                //"jdbc:hsqldb:file:db/usermanagement"; 
-        String user=properties.getProperty("connection.user"); 
-        String password=properties.getProperty("connection.password");
-        properties.getProperty("connection.drive");
-        ConnectionFactoryImpl connectionFactory= new ConnectionFactoryImpl(databaseDriver,url,user,password);
+        ConnectionFactoryImpl connectionFactory= new ConnectionFactoryImpl(properties);
         return connectionFactory;
         
     }

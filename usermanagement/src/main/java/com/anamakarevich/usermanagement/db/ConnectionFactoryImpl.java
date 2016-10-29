@@ -3,6 +3,7 @@ package com.anamakarevich.usermanagement.db;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.Properties;
 
 public class ConnectionFactoryImpl implements ConnectionFactory {
 
@@ -19,6 +20,12 @@ public class ConnectionFactoryImpl implements ConnectionFactory {
         this.password = password;
     }
 
+    public ConnectionFactoryImpl(Properties properties) {
+        this.databaseDriver=properties.getProperty("connection.drive");
+        this.url=properties.getProperty("connection.url");
+        this.user=properties.getProperty("connection.user");
+        this.password=properties.getProperty("connection.password");
+    }
     @Override
     public Connection createConnection() throws DatabaseException {
         
