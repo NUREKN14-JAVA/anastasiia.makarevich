@@ -6,6 +6,8 @@ import java.awt.Component;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+import com.anamakarevich.usermanagement.db.DaoFactory;
+import com.anamakarevich.usermanagement.db.UserDao;
 import com.anamakarevich.usermanagement.util.Messages;
 
 public class MainFrame extends JFrame {
@@ -16,14 +18,15 @@ public class MainFrame extends JFrame {
     private JPanel contentPanel;
     private JPanel browsePanel;
     private AddPanel addPanel;
-    
+    private UserDao dao;
     
     public MainFrame() {
         super();
+        dao = DaoFactory.getInstance().getUserDao();
         initialize();
 
     }
-    
+
     private void initialize() {
         // TODO Auto-generated method stub
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -49,6 +52,7 @@ public class MainFrame extends JFrame {
             browsePanel = new BrowsePanel(this);
             // TODO: decide where to put the browse panel
         }
+        ((BrowsePanel) browsePanel).initTable();
         return browsePanel;
     }
 
@@ -80,5 +84,10 @@ public class MainFrame extends JFrame {
         }
         return addPanel;
     }
+
+    public UserDao getDao() {
+        return dao;
+    }
+
 
 }

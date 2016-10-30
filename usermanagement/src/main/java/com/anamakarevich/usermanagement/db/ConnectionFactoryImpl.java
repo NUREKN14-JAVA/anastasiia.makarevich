@@ -21,15 +21,13 @@ public class ConnectionFactoryImpl implements ConnectionFactory {
     }
 
     public ConnectionFactoryImpl(Properties properties) {
-        this.databaseDriver=properties.getProperty("connection.drive");
+        this.databaseDriver=properties.getProperty("connection.driver");
         this.url=properties.getProperty("connection.url");
         this.user=properties.getProperty("connection.user");
         this.password=properties.getProperty("connection.password");
     }
     @Override
     public Connection createConnection() throws DatabaseException {
-        
-        Connection connection;
         
         try {
             // Load class and run its static initializers that will register the driver
@@ -42,13 +40,11 @@ public class ConnectionFactoryImpl implements ConnectionFactory {
         
         try {
             // Get connection to database
-            connection = DriverManager.getConnection(url, user, password);
+            return DriverManager.getConnection(url, user, password);
             } catch (SQLException e) {
                 System.out.println("ERROR: failed to get connection to HSQLDB.");
                 e.printStackTrace();
                 throw new DatabaseException();
                 }
-        return connection;
         }
-
 }

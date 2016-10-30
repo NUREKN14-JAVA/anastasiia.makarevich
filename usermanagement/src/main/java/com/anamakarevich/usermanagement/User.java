@@ -1,6 +1,7 @@
 package com.anamakarevich.usermanagement;
 
 import java.time.LocalDate;
+import java.util.Date;
 
 /**
  * @author ana_makarevich
@@ -64,7 +65,6 @@ public class User {
         int currentYear = LocalDate.now().getYear();
         int year = dateOfBirthd.getYear();
         return currentYear - year;
-        
         }
 
 }

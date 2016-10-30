@@ -7,16 +7,18 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 import javax.swing.JButton;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
 import com.anamakarevich.usermanagement.User;
+import com.anamakarevich.usermanagement.db.DatabaseException;
 import com.anamakarevich.usermanagement.util.Messages;
 
 public class BrowsePanel extends JPanel implements ActionListener {
     
-    private MainFrame frame;
+    private MainFrame parent;
     private JPanel buttonPanel;
     private JScrollPane tablePanel;
     private JButton addButton;
@@ -26,7 +28,7 @@ public class BrowsePanel extends JPanel implements ActionListener {
     private JTable userTable;
 
     public BrowsePanel(MainFrame frame) {
-        this.frame = frame;
+        parent = frame;
         initialize();
     }
 
@@ -136,12 +138,22 @@ public class BrowsePanel extends JPanel implements ActionListener {
     private JTable getUserTable() {
         if (userTable == null) {
             userTable = new JTable();
-            userTable.setName("userTable"); //$NON-NLS-1$
-            // TODO: Remove null
-            UserTableModel model = new UserTableModel(new ArrayList());
-            userTable.setModel(model);
+            userTable.setName("userTable"); //$NON-NLS-1$            
         }
+        //initTable();
         return userTable;
+    }
+
+    public void initTable() {
+        UserTableModel model;
+        try {
+            model = new UserTableModel(parent.getDao().findAll());
+        } catch (DatabaseException e) {
+            model = new UserTableModel(new ArrayList());
+            JOptionPane.showMessageDialog(this,e.getMessage(),"Error", 
+                    JOptionPane.ERROR_MESSAGE);
+        }
+        getUserTable().setModel(model);
     }
     
     @Override
@@ -150,7 +162,7 @@ public class BrowsePanel extends JPanel implements ActionListener {
         // check if the add button was clicked
         if ("add".equalsIgnoreCase(actionCommand)){ //$NON-NLS-1$
             this.setVisible(false);
-            frame.showAddPanel();
+            parent.showAddPanel();
             
         }
         

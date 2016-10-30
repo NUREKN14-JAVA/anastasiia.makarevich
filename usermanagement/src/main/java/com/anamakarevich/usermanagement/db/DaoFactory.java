@@ -5,17 +5,19 @@ import java.util.Properties;
 
 public abstract class DaoFactory {
     
-    protected static Properties properties;
-    protected static String USER_DAO = "dao.com.anamakarevich.usermanagement.db.UserDao";
+    protected static final String USER_DAO = "dao.com.anamakarevich.usermanagement.db.UserDao";
     private static final String DAO_FACTORY = "dao.factory";
+    protected static Properties properties;
+    
     private static DaoFactory instance;
     
     public abstract UserDao getUserDao();
     
     public static synchronized DaoFactory getInstance() {
         if (instance == null){
+            Class factoryClass;
             try {
-            Class<?> factoryClass = Class.forName(properties
+                factoryClass = Class.forName(properties
                     .getProperty(DAO_FACTORY));
             instance = (DaoFactory) factoryClass.newInstance();
         } catch (Exception e) {
@@ -24,7 +26,7 @@ public abstract class DaoFactory {
     }
        return instance;
     }
-    
+        
     static {
         properties = new Properties();
         try {
@@ -48,8 +50,7 @@ public abstract class DaoFactory {
     }
     
     protected ConnectionFactory getConnectionFactory() {
-        ConnectionFactoryImpl connectionFactory= new ConnectionFactoryImpl(properties);
-        return connectionFactory;
+        return new ConnectionFactoryImpl(properties);
     }
     
 

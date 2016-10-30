@@ -3,6 +3,7 @@ package com.anamakarevich.usermanagement.gui;
 import java.awt.Component;
 import java.text.DateFormat;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
 import java.util.Properties;
@@ -23,6 +24,7 @@ import com.anamakarevich.usermanagement.util.Messages;
 
 import junit.extensions.jfcunit.JFCTestCase;
 import junit.extensions.jfcunit.JFCTestHelper;
+import junit.extensions.jfcunit.TestHelper;
 import junit.extensions.jfcunit.eventdata.MouseEventData;
 import junit.extensions.jfcunit.eventdata.StringEventData;
 import junit.extensions.jfcunit.finder.NamedComponentFinder;
@@ -31,25 +33,27 @@ public class MainFrameTest extends JFCTestCase {
 
     private MainFrame mainFrame;
     private List users;
+ 
     
     @Before
     protected void setUp() throws Exception {
         super.setUp();
         try {
         Properties properties = new Properties();
-        properties.setProperty("com.anamakarevich.usermanagement.db.UserDao", 
+        properties.setProperty("dao.com.anamakarevich.usermanagement.db.UserDao", 
                 MockUserDao.class.getName());
-        DaoFactory.getInstance().init(properties);
+        DaoFactory.init(properties);
         properties.setProperty("dao.factory",
                 DaoFactoryImpl.class.getName());
         setHelper(new JFCTestHelper());
         // create and open a new window
         mainFrame = new MainFrame();
-        mainFrame.setVisible(true);
+
         }
         catch (Exception e) {
             e.printStackTrace();
         }
+        mainFrame.setVisible(true);
     }
     
     @Test
@@ -67,7 +71,6 @@ public class MainFrameTest extends JFCTestCase {
         find(JButton.class, "editButton");
         find(JButton.class, "detailsButton");
         find(JButton.class, "deleteButton");
-        
     }
   
     @Test
@@ -87,19 +90,16 @@ public class MainFrameTest extends JFCTestCase {
         JTextField firstNameField = (JTextField) find(JTextField.class, "firstNameField");
         JTextField lastNameField = (JTextField) find(JTextField.class, "lastNameField");
         JTextField dateOfBirthField = (JTextField) find(JTextField.class, "dateOfBirthField");
-        
-        // find the ok button
-        JButton okButton = (JButton) find(JButton.class, "okButton");
-        find(JButton.class, "cancelButton");
+       
+        //find(JButton.class, "cancelButton");
         
         // enter test data
         getHelper().sendString(new StringEventData(this, firstNameField, "John"));
         getHelper().sendString(new StringEventData(this, lastNameField, "Doe"));
-        DateFormat formatter = DateFormat.getDateInstance();
-        String date = formatter.format(new Date());
-        getHelper().sendString(new StringEventData(this, dateOfBirthField, date));
-        
-        // click ok button
+        LocalDate date = LocalDate.now();
+        getHelper().sendString(new StringEventData(this, dateOfBirthField, date.toString()));  
+        // find and the ok button
+        JButton okButton = (JButton) find(JButton.class, "okButton");
         getHelper().enterClickAndLeave(new MouseEventData(this,okButton));
         
         // find browse panel 
@@ -114,7 +114,8 @@ public class MainFrameTest extends JFCTestCase {
     protected void tearDown() throws Exception {
         // close the window
         mainFrame.setVisible(false);
-        getHelper().cleanUp(this);
+        getHelper();
+        TestHelper.cleanUp(this);
         super.tearDown();
     }
   
