@@ -10,6 +10,8 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
+import com.anamakarevich.usermanagement.util.Messages;
+
 public class BrowsePanel extends JPanel implements ActionListener {
     
     private MainFrame frame;
@@ -31,7 +33,7 @@ public class BrowsePanel extends JPanel implements ActionListener {
      */
     private void initialize() {
         this.setLayout(new BorderLayout());
-        this.setName("browsePanel"); 
+        this.setName("browsePanel");  //$NON-NLS-1$
         this.add(getTablePanel(), BorderLayout.CENTER);
         this.add(getButtonPanel(), BorderLayout.SOUTH);
         
@@ -63,10 +65,10 @@ public class BrowsePanel extends JPanel implements ActionListener {
     private JButton getDetailsButton() {
         if (detailsButton == null) {
             detailsButton = new JButton();
-            detailsButton.setText("Details");
-            detailsButton.setName("detailsButton");
+            detailsButton.setText(Messages.getString("BrowsePanel.details")); //$NON-NLS-1$
+            detailsButton.setName("detailsButton"); //$NON-NLS-1$
             detailsButton.addActionListener(this);
-            detailsButton.setActionCommand("details");
+            detailsButton.setActionCommand("details"); //$NON-NLS-1$
         }
         return detailsButton;
     }
@@ -78,10 +80,10 @@ public class BrowsePanel extends JPanel implements ActionListener {
     private JButton getDeleteButton() {
         if (deleteButton == null) {
             deleteButton = new JButton();
-            deleteButton.setText("Delete");
-            deleteButton.setName("deleteButton");
+            deleteButton.setText(Messages.getString("BrowsePanel.delete")); //$NON-NLS-1$
+            deleteButton.setName("deleteButton"); //$NON-NLS-1$
             deleteButton.addActionListener(this);
-            deleteButton.setActionCommand("delete");
+            deleteButton.setActionCommand("delete"); //$NON-NLS-1$
         }
         return deleteButton;
         
@@ -94,10 +96,10 @@ public class BrowsePanel extends JPanel implements ActionListener {
     private JButton getEditButton() {
         if (editButton == null) {
             editButton = new JButton();
-            editButton.setText("Edit");
-            editButton.setName("editButton");
+            editButton.setText(Messages.getString("BrowsePanel.edit")); //$NON-NLS-1$
+            editButton.setName("editButton"); //$NON-NLS-1$
             editButton.addActionListener(this);
-            editButton.setActionCommand("edit");
+            editButton.setActionCommand("edit"); //$NON-NLS-1$
         }
         return editButton;
         
@@ -110,10 +112,10 @@ public class BrowsePanel extends JPanel implements ActionListener {
     private JButton getAddButton() {
         if (addButton == null) {
             addButton = new JButton();
-            addButton.setText("Add");
-            addButton.setName("addButton");
+            addButton.setText(Messages.getString("BrowsePanel.add")); //$NON-NLS-1$
+            addButton.setName("addButton"); //$NON-NLS-1$
             addButton.addActionListener(this);
-            addButton.setActionCommand("add");
+            addButton.setActionCommand("add"); //$NON-NLS-1$
         }
         return addButton;
     }
@@ -136,7 +138,7 @@ public class BrowsePanel extends JPanel implements ActionListener {
     private JTable getUserTable() {
         if (userTable == null) {
             userTable = new JTable();
-            userTable.setName("userTable");
+            userTable.setName("userTable"); //$NON-NLS-1$
         }
         return userTable;
     }
@@ -145,7 +147,7 @@ public class BrowsePanel extends JPanel implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         String actionCommand = e.getActionCommand();
         // check if the add button was clicked
-        if (actionCommand.equalsIgnoreCase("add")){
+        if (actionCommand.equalsIgnoreCase("add")){ //$NON-NLS-1$
             this.setVisible(false);
             frame.showAddPanel();
             
