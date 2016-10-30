@@ -13,6 +13,7 @@ public class MainFrame extends JFrame {
 
     private JPanel contentPanel;
     private JPanel browsePanel;
+    private AddPanel addPanel;
     
     
     public MainFrame() {
@@ -46,6 +47,24 @@ public class MainFrame extends JFrame {
         // create and show the main window
         MainFrame frame = new MainFrame();
         frame.setVisible(true);
+    }
+
+    public void showAddPanel() {
+        showPanel(getAddPanel());
+    }
+
+    private void showPanel(JPanel panel) {
+        getContentPane().add(panel, BorderLayout.CENTER);
+        panel.setVisible(true); 
+        panel.repaint();
+        
+    }
+
+    private JPanel getAddPanel() {
+        if (addPanel == null) {
+            addPanel = new AddPanel(this);
+        }
+        return addPanel;
     }
 
 }

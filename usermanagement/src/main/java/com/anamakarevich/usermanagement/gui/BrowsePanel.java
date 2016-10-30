@@ -11,6 +11,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
 public class BrowsePanel extends JPanel implements ActionListener {
+    
     private MainFrame frame;
     private JPanel buttonPanel;
     private JScrollPane tablePanel;
@@ -25,17 +26,26 @@ public class BrowsePanel extends JPanel implements ActionListener {
         initialize();
     }
 
+    /**
+     * Sets up the browse panel
+     */
     private void initialize() {
-        setLayout(new BorderLayout());
+        this.setLayout(new BorderLayout());
         this.setName("browsePanel"); 
-        add(getTablePanel(), BorderLayout.CENTER);
-        add(getButtonPanel(), BorderLayout.SOUTH);
+        this.add(getTablePanel(), BorderLayout.CENTER);
+        this.add(getButtonPanel(), BorderLayout.SOUTH);
         
     }
 
+    /**
+     * Gets or creates buttons panel
+     * @return buttons panel
+     */
     private JPanel getButtonPanel() {
         if (buttonPanel == null) {
+            // create panel for the buttons
             buttonPanel = new JPanel();
+            // add buttons to the panel
             buttonPanel.add(getAddButton());
             buttonPanel.add(getEditButton());
             buttonPanel.add(getDeleteButton());
@@ -44,48 +54,74 @@ public class BrowsePanel extends JPanel implements ActionListener {
         return buttonPanel;
     }
 
+
+
+    /**
+     * Gets or creates details button
+     * @return details button
+     */
     private JButton getDetailsButton() {
         if (detailsButton == null) {
             detailsButton = new JButton();
             detailsButton.setText("Details");
             detailsButton.setName("detailsButton");
             detailsButton.addActionListener(this);
+            detailsButton.setActionCommand("details");
         }
         return detailsButton;
     }
 
+    /**
+     * Gets or creates delete button
+     * @return delete button
+     */
     private JButton getDeleteButton() {
         if (deleteButton == null) {
             deleteButton = new JButton();
             deleteButton.setText("Delete");
             deleteButton.setName("deleteButton");
             deleteButton.addActionListener(this);
+            deleteButton.setActionCommand("delete");
         }
         return deleteButton;
         
     }
 
+    /**
+     * Get or creates edit button
+     * @return edit button
+     */
     private JButton getEditButton() {
         if (editButton == null) {
             editButton = new JButton();
             editButton.setText("Edit");
             editButton.setName("editButton");
             editButton.addActionListener(this);
+            editButton.setActionCommand("edit");
         }
         return editButton;
         
     }
 
+    /**
+     * Gets or creates add button
+     * @return add button
+     */
     private JButton getAddButton() {
         if (addButton == null) {
             addButton = new JButton();
             addButton.setText("Add");
             addButton.setName("addButton");
             addButton.addActionListener(this);
+            addButton.setActionCommand("add");
         }
         return addButton;
     }
 
+    /**
+     * Gets or creates a table with users
+     * @return
+     */
     private JScrollPane getTablePanel() {
         if (tablePanel == null) {
             tablePanel = new JScrollPane(getUserTable());
@@ -93,6 +129,10 @@ public class BrowsePanel extends JPanel implements ActionListener {
         return tablePanel;
     }
 
+    /**
+     * Gets or creates users table
+     * @return
+     */
     private JTable getUserTable() {
         if (userTable == null) {
             userTable = new JTable();
@@ -103,7 +143,15 @@ public class BrowsePanel extends JPanel implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        // TODO Auto-generated method stub
+        String actionCommand = e.getActionCommand();
+        // check if the add button was clicked
+        if (actionCommand.equalsIgnoreCase("add")){
+            this.setVisible(false);
+            frame.showAddPanel();
+            
+        }
         
     }
+
+    
 }

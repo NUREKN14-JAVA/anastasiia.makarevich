@@ -5,6 +5,7 @@ import java.awt.Component;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JTable;
+import javax.swing.JTextField;
 
 import org.junit.After;
 import org.junit.Before;
@@ -12,6 +13,7 @@ import org.junit.Test;
 
 import junit.extensions.jfcunit.JFCTestCase;
 import junit.extensions.jfcunit.JFCTestHelper;
+import junit.extensions.jfcunit.eventdata.MouseEventData;
 import junit.extensions.jfcunit.finder.NamedComponentFinder;
 
 public class MainFrameTest extends JFCTestCase {
@@ -26,6 +28,7 @@ public class MainFrameTest extends JFCTestCase {
         mainFrame = new MainFrame();
         mainFrame.setVisible(true);
     }
+    
     @Test
     public void testBrowseControls() {
         
@@ -38,6 +41,20 @@ public class MainFrameTest extends JFCTestCase {
         find(JButton.class, "detailsButton");
     }
     
+    @Test
+    public void testAddUser() {
+        // check if the add button exists
+        JButton addButton = (JButton) find(JButton.class, "addButton");
+        // emulate button click
+        getHelper().enterClickAndLeave(new MouseEventData(this, addButton));
+        find(JPanel.class, "addPanel");
+        find(JTextField.class, "firstNameField");
+        find(JTextField.class, "lastNameField");
+        find(JTextField.class, "dateOfBirthField");
+        find(JButton.class, "okButton");
+    }
+    
+    
     @After
     protected void tearDown() throws Exception {
         // close the window
@@ -49,9 +66,9 @@ public class MainFrameTest extends JFCTestCase {
     private Component find(Class componentClass, String name) {
         // create the a finder for the gui components
         NamedComponentFinder finder  = new NamedComponentFinder(componentClass, name);
-        Component component = finder.find(mainFrame,0);
         // make the component show up instantly
         finder.setWait(0);
+        Component component = finder.find(mainFrame,0);
         // check if the component was found
         assertNotNull("Could not find component ‘" + name +"'", component);
         return component;
