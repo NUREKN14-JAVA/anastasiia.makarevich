@@ -19,12 +19,20 @@ public class MainFrame extends JFrame {
     
     
     public MainFrame() {
+        super();
+        initialize();
+
+    }
+    
+    private void initialize() {
+        // TODO Auto-generated method stub
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
         this.setSize(FRAME_WIDTH, FRAME_HEIGHT);
         this.setTitle(Messages.getString("MainFrame.user_management")); //$NON-NLS-1$
         this.setContentPane(getContentPanel());
+        
     }
-    
+
     JPanel getContentPanel() {
         // check if the panel already exists
         if  (contentPanel == null) {
@@ -54,6 +62,10 @@ public class MainFrame extends JFrame {
     public void showAddPanel() {
         showPanel(getAddPanel());
     }
+    
+    public void showBrowsePanel() {
+        showPanel(getBrowsePanel());
+    }
 
     private void showPanel(JPanel panel) {
         getContentPane().add(panel, BorderLayout.CENTER);
@@ -62,7 +74,7 @@ public class MainFrame extends JFrame {
         
     }
 
-    private JPanel getAddPanel() {
+    private AddPanel getAddPanel() {
         if (addPanel == null) {
             addPanel = new AddPanel(this);
         }

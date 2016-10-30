@@ -12,12 +12,12 @@
     	<!-- main build directory -->
         <mkdir dir="${build-dir}"/>
     	<!-- directory for the compiled classes -->
-    	<!-- <mkdir dir="${classes-dir}"/> -->    
+    	<mkdir dir="${classes-dir}"/>    
     </target>
 
 	<!-- compile classes -->
     <target name="compile" depends="init">
-        <javac srcdir="${main-java-dir}" destdir="${classes-dir}" includeantruntime="true">
+        <javac srcdir="${main-java-dir}" destdir="${classes-dir}" includeantruntime="true" debug="on">
         	<!-- include libraries -->
         	<classpath>
         	 	<fileset dir="${lib-dir}" />
@@ -34,7 +34,7 @@
 
 	<!-- compile tests -->
     <target name="test-compile" depends="compile">
-        <javac srcdir="${test-java-dir}" destdir="${classes-dir}" includeantruntime="true">
+        <javac srcdir="${test-java-dir}" destdir="${classes-dir}" includeantruntime="true" debug="on">
         	<classpath>
         		<fileset dir="${lib-dir}" />
         	</classpath>    

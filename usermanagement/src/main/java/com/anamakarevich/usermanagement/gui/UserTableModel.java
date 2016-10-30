@@ -1,0 +1,61 @@
+package com.anamakarevich.usermanagement.gui;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
+import javax.swing.table.AbstractTableModel;
+
+import com.anamakarevich.usermanagement.User;
+import com.anamakarevich.usermanagement.util.Messages;
+
+public class UserTableModel extends AbstractTableModel {
+
+    List users = null;
+    String[] COLUMN_NAMES = {
+            Messages.getString("UserTableModel.id"), 
+            Messages.getString("UserTableModel.first_name"), 
+            Messages.getString("UserTableModel.last_name")}; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+    Class<?>[] COLUMN_CLASSES = {Long.class, String.class, String.class};
+    
+    public UserTableModel(Collection users) {
+        this.users = new ArrayList(users);
+        
+    }
+    @Override
+    public int getRowCount() {
+        return users.size();
+    }
+
+    @Override
+    public int getColumnCount() {
+        return COLUMN_NAMES.length;
+    }
+
+    @Override
+    public Object getValueAt(int rowIndex, int columnIndex) {
+        // get the appropriate entry 
+        User user = (User) users.get(rowIndex);
+        // get the appropriate value
+        switch(columnIndex){
+        case 0:
+            return user.getId();
+        case 1:
+            return user.getFirstName();
+        case 2:
+            return user.getLastName();
+        default:
+            return null;
+        }
+    }
+    
+    public Class getColumnClass(int columnIndex) {
+        return COLUMN_CLASSES[columnIndex];
+    }
+    
+   public String getColumnName(int columnIndex) {
+       return COLUMN_NAMES[columnIndex];
+       
+   }
+
+}

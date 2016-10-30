@@ -4,12 +4,14 @@ import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
+import com.anamakarevich.usermanagement.User;
 import com.anamakarevich.usermanagement.util.Messages;
 
 public class BrowsePanel extends JPanel implements ActionListener {
@@ -35,7 +37,7 @@ public class BrowsePanel extends JPanel implements ActionListener {
         this.setLayout(new BorderLayout());
         this.setName("browsePanel");  //$NON-NLS-1$
         this.add(getTablePanel(), BorderLayout.CENTER);
-        this.add(getButtonPanel(), BorderLayout.SOUTH);
+        this.add(getButtonsPanel(), BorderLayout.SOUTH);
         
     }
 
@@ -43,20 +45,18 @@ public class BrowsePanel extends JPanel implements ActionListener {
      * Gets or creates buttons panel
      * @return buttons panel
      */
-    private JPanel getButtonPanel() {
+    private JPanel getButtonsPanel() {
         if (buttonPanel == null) {
             // create panel for the buttons
             buttonPanel = new JPanel();
             // add buttons to the panel
-            buttonPanel.add(getAddButton());
-            buttonPanel.add(getEditButton());
-            buttonPanel.add(getDeleteButton());
-            buttonPanel.add(getDetailsButton());
+            buttonPanel.add(getAddButton(),null);
+            buttonPanel.add(getEditButton(),null);
+            buttonPanel.add(getDeleteButton(),null);
+            buttonPanel.add(getDetailsButton(),null);
         }
         return buttonPanel;
     }
-
-
 
     /**
      * Gets or creates details button
@@ -67,12 +67,12 @@ public class BrowsePanel extends JPanel implements ActionListener {
             detailsButton = new JButton();
             detailsButton.setText(Messages.getString("BrowsePanel.details")); //$NON-NLS-1$
             detailsButton.setName("detailsButton"); //$NON-NLS-1$
-            detailsButton.addActionListener(this);
             detailsButton.setActionCommand("details"); //$NON-NLS-1$
+            detailsButton.addActionListener(this);
         }
         return detailsButton;
     }
-
+    
     /**
      * Gets or creates delete button
      * @return delete button
@@ -82,11 +82,10 @@ public class BrowsePanel extends JPanel implements ActionListener {
             deleteButton = new JButton();
             deleteButton.setText(Messages.getString("BrowsePanel.delete")); //$NON-NLS-1$
             deleteButton.setName("deleteButton"); //$NON-NLS-1$
-            deleteButton.addActionListener(this);
             deleteButton.setActionCommand("delete"); //$NON-NLS-1$
+            deleteButton.addActionListener(this);
         }
         return deleteButton;
-        
     }
 
     /**
@@ -98,11 +97,10 @@ public class BrowsePanel extends JPanel implements ActionListener {
             editButton = new JButton();
             editButton.setText(Messages.getString("BrowsePanel.edit")); //$NON-NLS-1$
             editButton.setName("editButton"); //$NON-NLS-1$
-            editButton.addActionListener(this);
             editButton.setActionCommand("edit"); //$NON-NLS-1$
+            editButton.addActionListener(this);
         }
-        return editButton;
-        
+        return editButton;        
     }
 
     /**
@@ -114,12 +112,12 @@ public class BrowsePanel extends JPanel implements ActionListener {
             addButton = new JButton();
             addButton.setText(Messages.getString("BrowsePanel.add")); //$NON-NLS-1$
             addButton.setName("addButton"); //$NON-NLS-1$
-            addButton.addActionListener(this);
             addButton.setActionCommand("add"); //$NON-NLS-1$
+            addButton.addActionListener(this);
         }
         return addButton;
     }
-
+   
     /**
      * Gets or creates a table with users
      * @return
@@ -139,15 +137,18 @@ public class BrowsePanel extends JPanel implements ActionListener {
         if (userTable == null) {
             userTable = new JTable();
             userTable.setName("userTable"); //$NON-NLS-1$
+            // TODO: Remove null
+            UserTableModel model = new UserTableModel(new ArrayList());
+            userTable.setModel(model);
         }
         return userTable;
     }
-
+    
     @Override
     public void actionPerformed(ActionEvent e) {
         String actionCommand = e.getActionCommand();
         // check if the add button was clicked
-        if (actionCommand.equalsIgnoreCase("add")){ //$NON-NLS-1$
+        if ("add".equalsIgnoreCase(actionCommand)){ //$NON-NLS-1$
             this.setVisible(false);
             frame.showAddPanel();
             

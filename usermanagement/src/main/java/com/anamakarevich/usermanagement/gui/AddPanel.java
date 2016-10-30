@@ -15,7 +15,7 @@ import com.anamakarevich.usermanagement.util.Messages;
 
 public class AddPanel extends JPanel implements ActionListener {
 
-    private MainFrame frame;
+    private MainFrame parent;
     private JPanel fieldPanel;
     private JPanel buttonPanel;
     private JButton okButton;
@@ -26,7 +26,7 @@ public class AddPanel extends JPanel implements ActionListener {
     
     
     public AddPanel(MainFrame frame) {
-        this.frame = frame;
+        parent = frame;
         initialize();
     }
 
@@ -34,8 +34,8 @@ public class AddPanel extends JPanel implements ActionListener {
      * Set up the buttons panel and the input fields
      */
     private void initialize() {
-        setLayout(new BorderLayout());
         this.setName("addPanel");  //$NON-NLS-1$
+        setLayout(new BorderLayout());
         this.add(getFieldPanel(), BorderLayout.NORTH);
         this.add(getButtonPanel(), BorderLayout.SOUTH);
     }
@@ -119,6 +119,8 @@ public class AddPanel extends JPanel implements ActionListener {
     }
     @Override
     public void actionPerformed(ActionEvent e) {
+        this.setVisible(false);
+        parent.showBrowsePanel();
         // TODO Auto-generated method stub
         
     }
