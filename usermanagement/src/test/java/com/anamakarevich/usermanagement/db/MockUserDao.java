@@ -8,7 +8,7 @@ import com.anamakarevich.usermanagement.User;
 
 public class MockUserDao implements UserDao {
     private long id = 0;
-    private Map users = new HashMap();
+    private Map<Long, User> users = new HashMap<Long, User>();
 
     public User create(User user) throws DatabaseException {
         System.out.println("create " + user);
@@ -34,7 +34,7 @@ public class MockUserDao implements UserDao {
         return (User) users.get(id);
     }
 
-    public Collection findAll() throws DatabaseException {
+    public Collection<?> findAll() throws DatabaseException {
         return users.values();
     }
 

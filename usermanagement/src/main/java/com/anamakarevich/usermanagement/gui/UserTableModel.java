@@ -11,15 +11,16 @@ import com.anamakarevich.usermanagement.util.Messages;
 
 public class UserTableModel extends AbstractTableModel {
 
-    List users = null;
+    List<?> users = null;
     String[] COLUMN_NAMES = {
             Messages.getString("UserTableModel.id"), 
             Messages.getString("UserTableModel.first_name"), 
             Messages.getString("UserTableModel.last_name")}; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
     Class<?>[] COLUMN_CLASSES = {Long.class, String.class, String.class};
     
-    public UserTableModel(Collection users) {
-        this.users = new ArrayList(users);
+    @SuppressWarnings("unchecked")
+    public UserTableModel(Collection<?> collection) {
+        this.users = new ArrayList(collection);
         
     }
     @Override
@@ -49,7 +50,7 @@ public class UserTableModel extends AbstractTableModel {
         }
     }
     
-    public Class getColumnClass(int columnIndex) {
+    public Class<?> getColumnClass(int columnIndex) {
         return COLUMN_CLASSES[columnIndex];
     }
     

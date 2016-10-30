@@ -149,7 +149,7 @@ public class BrowsePanel extends JPanel implements ActionListener {
         try {
             model = new UserTableModel(parent.getDao().findAll());
         } catch (DatabaseException e) {
-            model = new UserTableModel(new ArrayList());
+            model = new UserTableModel(new ArrayList<User>());
             JOptionPane.showMessageDialog(this,e.getMessage(),"Error", 
                     JOptionPane.ERROR_MESSAGE);
         }

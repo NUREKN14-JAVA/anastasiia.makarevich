@@ -1,11 +1,8 @@
 package com.anamakarevich.usermanagement.gui;
 
 import java.awt.Component;
-import java.text.DateFormat;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.Date;
-import java.util.List;
+//import java.util.List;
 import java.util.Properties;
 
 import javax.swing.JButton;
@@ -32,7 +29,7 @@ import junit.extensions.jfcunit.finder.NamedComponentFinder;
 public class MainFrameTest extends JFCTestCase {
 
     private MainFrame mainFrame;
-    private List users;
+    //private List<?> users;
  
     
     @Before
@@ -125,7 +122,7 @@ public class MainFrameTest extends JFCTestCase {
      * @param name
      * @return the gui component
      */
-    private Component find(Class componentClass, String name) {
+    private Component find(Class<?> componentClass, String name) {
         // create the a finder for the gui components
         NamedComponentFinder finder;
         finder = new NamedComponentFinder(componentClass, name);
