@@ -1,7 +1,6 @@
 package com.anamakarevich.usermanagement.gui;
 
 import java.awt.BorderLayout;
-import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -18,6 +17,7 @@ import com.anamakarevich.usermanagement.util.Messages;
 
 public class BrowsePanel extends JPanel implements ActionListener {
     
+    private static final long serialVersionUID = 1L;
     private MainFrame parent;
     private JPanel buttonPanel;
     private JScrollPane tablePanel;
@@ -52,10 +52,10 @@ public class BrowsePanel extends JPanel implements ActionListener {
             // create panel for the buttons
             buttonPanel = new JPanel();
             // add buttons to the panel
-            buttonPanel.add(getAddButton(),null);
-            buttonPanel.add(getEditButton(),null);
-            buttonPanel.add(getDeleteButton(),null);
-            buttonPanel.add(getDetailsButton(),null);
+            buttonPanel.add(getAddButton());
+            buttonPanel.add(getEditButton());
+            buttonPanel.add(getDeleteButton());
+            buttonPanel.add(getDetailsButton());
         }
         return buttonPanel;
     }
@@ -147,10 +147,11 @@ public class BrowsePanel extends JPanel implements ActionListener {
     public void initTable() {
         UserTableModel model;
         try {
+        	// try to get all users from the database
             model = new UserTableModel(parent.getDao().findAll());
         } catch (DatabaseException e) {
             model = new UserTableModel(new ArrayList<User>());
-            JOptionPane.showMessageDialog(this,e.getMessage(),"Error", 
+            JOptionPane.showMessageDialog(this,e.getMessage(),Messages.getString("BrowsePanel.error"),  //$NON-NLS-1$
                     JOptionPane.ERROR_MESSAGE);
         }
         getUserTable().setModel(model);
@@ -161,9 +162,14 @@ public class BrowsePanel extends JPanel implements ActionListener {
         String actionCommand = e.getActionCommand();
         // check if the add button was clicked
         if ("add".equalsIgnoreCase(actionCommand)){ //$NON-NLS-1$
+        	// hide browse panel and show add panel instead
             this.setVisible(false);
             parent.showAddPanel();
             
+        }
+        if("edit".equalsIgnoreCase(actionCommand)) { //$NON-NLS-1$
+            this.setVisible(false);
+            parent.showEditPanel();
         }
         
     }

@@ -8,7 +8,7 @@ import java.util.Date;
  * User class that describes the user
  */
 public class User {
-
+	
     private Long id;
     
     private String firstName;

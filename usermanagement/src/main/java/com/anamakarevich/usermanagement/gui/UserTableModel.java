@@ -11,6 +11,7 @@ import com.anamakarevich.usermanagement.util.Messages;
 
 public class UserTableModel extends AbstractTableModel {
 
+    private static final long serialVersionUID = 1L;
     List<?> users = null;
     String[] COLUMN_NAMES = {
             Messages.getString("UserTableModel.id"), 

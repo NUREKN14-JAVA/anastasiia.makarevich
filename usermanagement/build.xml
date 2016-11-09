@@ -1,4 +1,3 @@
-
 <project name="usermanagement" default="test" basedir=".">
     <property file="${basedir}/build.properties"/>
 	
@@ -17,7 +16,7 @@
 
 	<!-- compile classes -->
     <target name="compile" depends="init">
-        <javac srcdir="${main-java-dir}" destdir="${classes-dir}" includeantruntime="true" debug="on">
+        <javac srcdir="${main-java-dir}" destdir="${classes-dir}" includeantruntime="false" debug="on">
         	<!-- include libraries -->
         	<classpath>
         	 	<fileset dir="${lib-dir}" />
@@ -51,14 +50,14 @@
     <target name="test" depends="test-compile" description="description">
     	<!-- create directory for the test results -->
         <mkdir dir="${test-result-dir}"/>      
-        <junit>
+        <junit showoutput="yes">
             <classpath>			
             	<pathelement location="${classes-dir}"/>
             	<fileset dir="${lib-dir}" />
             </classpath>
             <formatter type="plain"/>
         	<!-- process test as a batch -->
-        	<batchtest todir="${test-result-dir}" fork="true">
+        	<batchtest todir="${test-result-dir}" fork="yes">
         	    <fileset dir="${test-java-dir}"> 
         	        <include name ="**/*Test.java"/>
         		</fileset>

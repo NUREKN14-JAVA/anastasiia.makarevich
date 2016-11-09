@@ -1,7 +1,10 @@
 package com.anamakarevich.usermanagement.db;
 
+/**
+ * Dao Factory Implementation. 
+ */
 public class DaoFactoryImpl extends DaoFactory {
-
+	
     public UserDao getUserDao() {
         UserDao result = null;
         try {

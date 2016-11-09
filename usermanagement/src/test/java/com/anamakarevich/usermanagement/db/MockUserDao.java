@@ -11,7 +11,7 @@ public class MockUserDao implements UserDao {
     private Map<Long, User> users = new HashMap<Long, User>();
 
     public User create(User user) throws DatabaseException {
-        System.out.println("create " + user);
+        //System.out.println("create " + user);
         Long currentId = new Long(++id);
         user.setId(currentId);
         users.put(currentId, user);

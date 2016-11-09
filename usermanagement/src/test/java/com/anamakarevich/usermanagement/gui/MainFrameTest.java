@@ -9,6 +9,7 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
 
 import org.junit.After;
 import org.junit.Before;
@@ -36,26 +37,33 @@ public class MainFrameTest extends JFCTestCase {
     protected void setUp() throws Exception {
         super.setUp();
         try {
-        Properties properties = new Properties();
-        properties.setProperty("dao.com.anamakarevich.usermanagement.db.UserDao", 
+        	// choose and set up the DaoFactory implementation class
+        	// and UserDao implementation
+            Properties properties = new Properties();
+            properties.setProperty("dao.com.anamakarevich.usermanagement.db.UserDao", 
                 MockUserDao.class.getName());
-        DaoFactory.init(properties);
-        properties.setProperty("dao.factory",
+            properties.setProperty("dao.factory",
                 DaoFactoryImpl.class.getName());
-        setHelper(new JFCTestHelper());
-        // create and open a new window
-        mainFrame = new MainFrame();
+            DaoFactory.init(properties);
+            setHelper(new JFCTestHelper());
+            // create new window
+            mainFrame = new MainFrame();
 
         }
         catch (Exception e) {
             e.printStackTrace();
         }
-        mainFrame.setVisible(true);
+        // show the main window
+        SwingUtilities.invokeLater(
+    			new Runnable() {
+    				public void run() {
+    					 mainFrame.setVisible(true);
+    				}
+    			});
     }
     
     @Test
     public void testBrowseControls() {
-        
         // check that we have the browse panel available
         find(JPanel.class, "browsePanel");
         
@@ -64,6 +72,7 @@ public class MainFrameTest extends JFCTestCase {
         assertEquals(Messages.getString("UserTableModel.id"), table.getColumnName(0));
         assertEquals(Messages.getString("UserTableModel.first_name"), table.getColumnName(1));
         assertEquals(Messages.getString("UserTableModel.last_name"), table.getColumnName(2));
+        
         find(JButton.class, "addButton");
         find(JButton.class, "editButton");
         find(JButton.class, "detailsButton");
@@ -72,7 +81,7 @@ public class MainFrameTest extends JFCTestCase {
   
     @Test
     public void testAddUser() {
-        // check that there are not users in the table
+        // check that there are no users in the table
         JTable table = (JTable) find(JTable.class, "userTable");
         assertEquals(0, table.getRowCount());
         
@@ -95,22 +104,25 @@ public class MainFrameTest extends JFCTestCase {
         getHelper().sendString(new StringEventData(this, lastNameField, "Doe"));
         LocalDate date = LocalDate.now();
         getHelper().sendString(new StringEventData(this, dateOfBirthField, date.toString()));  
-        // find and the ok button
+        // check that ok an cancel buttons exist
         JButton okButton = (JButton) find(JButton.class, "okButton");
+        find(JButton.class, "cancelButton");
+        // click ok
         getHelper().enterClickAndLeave(new MouseEventData(this,okButton));
         
-        // find browse panel 
+        
+        // find browse panel = check that we returned to the main screen 
         find(JPanel.class, "browsePanel");
         table = (JTable) find(JTable.class, "userTable");
+        // check that the new user has been added
         assertEquals(1, table.getRowCount());
       
     }
-    
-    
+
     @After
     protected void tearDown() throws Exception {
         // close the window
-        mainFrame.setVisible(false);
+    	mainFrame.setVisible(false);
         getHelper();
         TestHelper.cleanUp(this);
         super.tearDown();
@@ -118,15 +130,15 @@ public class MainFrameTest extends JFCTestCase {
   
     /**
      * Finds the component of the given class with the given name
-     * @param componentClass
-     * @param name
+     * @param componentClass 
+     * @param name name of the component to find
      * @return the gui component
      */
     private Component find(Class<?> componentClass, String name) {
-        // create the a finder for the gui components
+        // create an instance of finder for the gui components
         NamedComponentFinder finder;
         finder = new NamedComponentFinder(componentClass, name);
-        // make the component show up instantly
+        // make the component show up instantly when testing
         finder.setWait(0);
         Component component = finder.find(mainFrame,0);
         // check if the component was found
