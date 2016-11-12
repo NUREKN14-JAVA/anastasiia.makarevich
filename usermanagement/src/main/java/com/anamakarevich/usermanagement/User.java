@@ -17,6 +17,22 @@ public class User {
     //private Date dateOfBirthd;
     private LocalDate dateOfBirthd;
     
+	public User() {
+		
+	}
+	public User(String firstName, String lastName, LocalDate date) {
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.dateOfBirthd = date;
+	}
+	public User(Long id, String firstName, String lastName, LocalDate date) {
+		this.id = id;
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.dateOfBirthd = date;
+	}
+	
+    
     public Long getId() {
         return id;
         }
@@ -66,5 +82,30 @@ public class User {
         int year = dateOfBirthd.getYear();
         return currentYear - year;
         }
+    /**
+     * Compares two users
+     * @param user
+     * @return
+     */
+    public boolean equals(Object obj) {
+    	if (obj == null) {
+    		return false;
+    	}
+    	if (this == obj) {
+    		return true;
+    	}
+    	if (this.getId() == null && ((User) obj).getId() == null) {
+    		return true;
+    	}
+    	return this.getId().equals(((User)obj).getId());
+    }
+    public int hashCode() {
+    	if (this.getId() == null) {
+    		return 0;
+    		}
+    	return this.getId().hashCode();
+    	}
+    
+    
 
 }

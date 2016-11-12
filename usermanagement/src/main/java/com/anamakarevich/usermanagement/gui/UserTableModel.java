@@ -59,5 +59,8 @@ public class UserTableModel extends AbstractTableModel {
        return COLUMN_NAMES[columnIndex];
        
    }
+public User getUserByRow(int selectedRow) {
+	return (User) users.get(selectedRow);
+}
 
 }

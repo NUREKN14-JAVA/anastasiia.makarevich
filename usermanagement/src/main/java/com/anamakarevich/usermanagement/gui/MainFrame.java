@@ -5,6 +5,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
+import com.anamakarevich.usermanagement.User;
 import com.anamakarevich.usermanagement.db.DaoFactory;
 import com.anamakarevich.usermanagement.db.UserDao;
 import com.anamakarevich.usermanagement.util.Messages;
@@ -113,7 +114,8 @@ public class MainFrame extends JFrame {
         return dao;
     }
 
-    public void showEditPanel() {
+    public void showEditPanel(User user) {
+    	getEditPanel().fillInForm(user);
         showPanel(getEditPanel());
     }
 

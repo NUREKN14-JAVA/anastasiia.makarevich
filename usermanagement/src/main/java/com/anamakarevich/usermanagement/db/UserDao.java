@@ -21,6 +21,7 @@ public interface UserDao {
      * <p><b>Note</b>: Mutates all fields in the database except for the id field<p>
      * <p><b>Note</b>: id field of the user can't be null</p>
      * @param user instance with the new data (id can't be null)
+     * @return updated user instance
      * @throws DatabaseException if the update failed (possible reasons: 
      * id field was null, connection to database failed)
      */

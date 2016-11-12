@@ -168,8 +168,21 @@ public class BrowsePanel extends JPanel implements ActionListener {
             
         }
         if("edit".equalsIgnoreCase(actionCommand)) { //$NON-NLS-1$
+        	
+            // get the index of the selected row
+            int selectedRow = userTable.getSelectedRow();
+            
+            // if the user clicked ok without selecting anything
+            if (selectedRow == -1) {
+                JOptionPane.showMessageDialog(this, "Select a user, please",
+                        "Error", JOptionPane.INFORMATION_MESSAGE);
+                return;
+            }
+            // get the user from the table
+            User user = ((UserTableModel) userTable.getModel()).getUserByRow(selectedRow);
+            // hide browse panel
             this.setVisible(false);
-            parent.showEditPanel();
+            parent.showEditPanel(user);
         }
         
     }

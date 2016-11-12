@@ -40,7 +40,10 @@ public class AddPanel extends JPanel implements ActionListener {
         parent = frame;
         initialize();
     }
-
+    
+    protected MainFrame getParentFrame() {
+    	return parent;
+    }
     
      // Set up the buttons panel and the input fields
     private void initialize() {
@@ -95,7 +98,7 @@ public class AddPanel extends JPanel implements ActionListener {
         return fieldPanel;
     }
 
-    private JTextField getDateOfBirthField() {
+    protected JTextField getDateOfBirthField() {
         if (dateOfBirthField == null) {
             dateOfBirthField = new JTextField();
             dateOfBirthField.setName("dateOfBirthField"); 
@@ -103,7 +106,7 @@ public class AddPanel extends JPanel implements ActionListener {
         return dateOfBirthField;
     }
 
-    private JTextField getLastNameField() {
+    protected JTextField getLastNameField() {
         if (lastNameField == null) {
             lastNameField = new JTextField();
             lastNameField.setName("lastNameField"); 
@@ -111,7 +114,7 @@ public class AddPanel extends JPanel implements ActionListener {
         return lastNameField;
     }
 
-    private JTextField getFirstNameField() {
+    protected JTextField getFirstNameField() {
         if (firstNameField == null) {
             firstNameField = new JTextField();
             firstNameField.setName("firstNameField"); 
@@ -126,6 +129,7 @@ public class AddPanel extends JPanel implements ActionListener {
         panel.add(label);
         panel.add(textField);
     }
+    
     @Override
     public void actionPerformed(ActionEvent e) {
         if ("ok".equals(e.getActionCommand())) { 
@@ -155,7 +159,7 @@ public class AddPanel extends JPanel implements ActionListener {
         parent.showBrowsePanel();
     }
 
-    private void clearFields() {
+    protected void clearFields() {
         getFirstNameField().setText(""); //$NON-NLS-1$
         getFirstNameField().setBackground(bgColor);
         
