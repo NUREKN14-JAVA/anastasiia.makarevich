@@ -61,6 +61,7 @@ public class MainFrameTest extends JFCTestCase {
             setHelper(new JFCTestHelper());
             // create new window
             mainFrame = new MainFrame();
+            mockUserDao.verify();
 
         }
         catch (Exception e) {
@@ -309,13 +310,13 @@ public class MainFrameTest extends JFCTestCase {
 			// check that the brows panel appears after clicking ok
 			table = (JTable) find(JTable.class, "userTable");
 			find(JPanel.class, "browsePanel");
-			mockUserDao.verify();
 			if (!"Ozzy".equals(firstName.getText())){
 				fail("Wrong user");
 			}
 			if (!"Osbourne".equals(lastName.getText())) {
 				fail("Wrong user");
 			}
+			mockUserDao.verify();
 		} catch (Exception e) {
 			fail(e.toString());
 		}    	
@@ -345,6 +346,7 @@ public class MainFrameTest extends JFCTestCase {
 			
 			
 			// find all the dialogs
+			@SuppressWarnings("unchecked")
 			List<JDialog> showingDialogs = getHelper().getShowingDialogs();
 			
 			// get the first dialog (actually we know that there is just one

@@ -16,7 +16,7 @@
 
 	<!-- compile classes -->
     <target name="compile" depends="init">
-        <javac srcdir="${main-java-dir}" destdir="${classes-dir}" includeantruntime="false" debug="on">
+        <javac srcdir="${main-java-dir}" destdir="${classes-dir}" includeantruntime="true" debug="on">
         	<!-- include libraries -->
         	<classpath>
         	 	<fileset dir="${lib-dir}" />
@@ -48,7 +48,7 @@
     </target>
 
     <target name="test" depends="test-compile" description="description">
-    	<!-- create directory for the test results -->
+    	<!-- create directory for the test results -->    	
         <mkdir dir="${test-result-dir}"/>      
         <junit showoutput="yes">
             <classpath>			
