@@ -166,7 +166,7 @@ public class BrowsePanel extends JPanel implements ActionListener {
             parent.showAddPanel();
             
         }
-        if("edit".equalsIgnoreCase(actionCommand)) { //$NON-NLS-1$
+        if ("edit".equalsIgnoreCase(actionCommand)) { //$NON-NLS-1$
         	
             User user = getSelectedUser();
             if (user ==null) {
@@ -175,13 +175,36 @@ public class BrowsePanel extends JPanel implements ActionListener {
             this.setVisible(false);
             parent.showEditPanel(user);
         }
-        if("details".equalsIgnoreCase(actionCommand)) {
+        if ("details".equalsIgnoreCase(actionCommand)) {
         	User user = getSelectedUser();
         	if (user == null) {
         		return;
         	}
         	this.setVisible(false);
         	parent.showDetailsPanel(user);
+        }
+        if ("delete".equals(actionCommand)){
+        	User user = getSelectedUser();
+        	if (user == null) {
+        		return;
+        	}
+        	int answer = JOptionPane.showConfirmDialog(
+        		    parent,
+        		    "Are you sure you want to delete?",
+        		    "Confirmation",
+        		    JOptionPane.OK_CANCEL_OPTION);
+        	if (answer == JOptionPane.OK_OPTION) {
+        		try {
+					parent.getDao().delete(user);
+				} catch (DatabaseException e1) {
+	                JOptionPane.showMessageDialog(this, 
+	                        e1.getMessage(), 
+	                        "Error",
+	                        JOptionPane.ERROR_MESSAGE);
+	                e1.printStackTrace();
+				}
+        	}
+        	 initTable();
         }
         
     }

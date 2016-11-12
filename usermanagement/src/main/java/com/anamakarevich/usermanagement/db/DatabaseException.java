@@ -2,7 +2,9 @@ package com.anamakarevich.usermanagement.db;
 
 public class DatabaseException extends Exception {
 
-    public DatabaseException(String exceptionMessage) {
+	private static final long serialVersionUID = 1L;
+
+	public DatabaseException(String exceptionMessage) {
         super(exceptionMessage);
     }
 

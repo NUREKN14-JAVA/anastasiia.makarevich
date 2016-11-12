@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Properties;
 
 import javax.swing.JButton;
+import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTable;
@@ -28,6 +29,8 @@ import junit.extensions.jfcunit.TestHelper;
 import junit.extensions.jfcunit.eventdata.JTableMouseEventData;
 import junit.extensions.jfcunit.eventdata.MouseEventData;
 import junit.extensions.jfcunit.eventdata.StringEventData;
+import junit.extensions.jfcunit.finder.ComponentFinder;
+import junit.extensions.jfcunit.finder.Finder;
 import junit.extensions.jfcunit.finder.NamedComponentFinder;
 import com.mockobjects.dynamic.Mock;
 
@@ -138,8 +141,7 @@ public class MainFrameTest extends JFCTestCase {
 			JButton okButton = (JButton) find(JButton.class, "okButton");
 			// click ok
 			getHelper().enterClickAndLeave(new MouseEventData(this,okButton));
-			
-			
+
 			// find browse panel = check that we returned to the main screen 
 			find(JPanel.class, "browsePanel");
 			table = (JTable) find(JTable.class, "userTable");
@@ -150,11 +152,53 @@ public class MainFrameTest extends JFCTestCase {
 			fail(e.toString());
 		}
     }
+
+    @Test
+    public void testCancelAddUser() {
+        try {
+			ArrayList<User> users = new ArrayList<User>(this.users);
+			mockUserDao.expectAndReturn("findAll", users);
+			
+			// check that there are no users in the table
+			JTable table = (JTable) find(JTable.class, "userTable");
+			assertEquals(1, table.getRowCount());
+			
+			// find and click the add button
+			JButton addButton = (JButton) find(JButton.class, "addButton");
+			getHelper().enterClickAndLeave(new MouseEventData(this, addButton));
+			// find the add panel
+			find(JPanel.class, "addPanel");
+			
+			// find and and fill in the fields
+			JTextField firstNameField = (JTextField) find(JTextField.class, "firstNameField");
+			JTextField lastNameField = (JTextField) find(JTextField.class, "lastNameField");
+			JTextField dateOfBirthField = (JTextField) find(JTextField.class, "dateOfBirthField");
+			
+			getHelper().sendString(new StringEventData(this, firstNameField, "John"));
+			getHelper().sendString(new StringEventData(this, lastNameField, "Doe"));
+			getHelper().sendString(new StringEventData(this, dateOfBirthField, LocalDate.now().toString()));  
+			
+			// check that ok an cancel buttons exist
+			JButton cancelButton = (JButton) find(JButton.class, "cancelButton");
+			find(JButton.class, "okButton");
+			// click cancel
+			getHelper().enterClickAndLeave(new MouseEventData(this, cancelButton));
+			
+			// find browse panel = check that we returned to the main screen 
+			find(JPanel.class, "browsePanel");
+			table = (JTable) find(JTable.class, "userTable");
+			// check that the new user has been added
+			assertEquals(1, table.getRowCount());
+			mockUserDao.verify();
+		} catch (Exception e) {
+			fail(e.toString());
+		}
+    }
     
     @Test
     public void testEditUser() {
         try {
-			User expectedUser = new User(new Long(666), "Ozzy", "Ozbourne", LocalDate.now());
+			User expectedUser = new User(new Long(666), "Robert", "Burns", LocalDate.now());
 			System.out.println(expectedUser);
 			mockUserDao.expect("update", expectedUser);
 
@@ -192,11 +236,54 @@ public class MainFrameTest extends JFCTestCase {
 			find(JPanel.class, "browsePanel");
 			mockUserDao.verify();
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			fail(e.toString());
 		}
     	
     }
+    
+    @Test
+    public void testCancelEditUser() {
+        try {
+			List<User> users = new ArrayList<User>(this.users);
+			mockUserDao.expectAndReturn("findAll", users);
+			
+			JTable table = (JTable) find(JTable.class, "userTable");
+			assertEquals(1, table.getRowCount());
+			JButton editButton = (JButton) find(JButton.class, "editButton");
+			// select first user in the table
+			getHelper().enterClickAndLeave(new JTableMouseEventData(this, table, 0, 0, 1));
+			// click edit button
+			getHelper().enterClickAndLeave(new MouseEventData(this, editButton));
+			
+			// check that the edit panel has been opened
+			find(JPanel.class, "editPanel");
+			
+			// find all the fields
+			JTextField firstNameField = (JTextField) find(JTextField.class, "firstNameField");
+			JTextField lastNameField = (JTextField) find(JTextField.class, "lastNameField");
+			find(JTextField.class, "dateOfBirthField");
+			
+			// simulate editing data, replace Ozzy Osbourne with Robert Burns, who cares anyway?
+			getHelper().sendString(new StringEventData(this, firstNameField, "Robert"));
+			getHelper().sendString(new StringEventData(this, lastNameField, "Burns"));
+			
+			// check if cancel button exists
+			JButton cancelButton =  (JButton) find(JButton.class, "cancelButton");
+			// find and click ok button
+			find(JButton.class, "okButton");
+			getHelper().enterClickAndLeave(new MouseEventData(this, cancelButton));
+			
+			// check that the brows panel appears after clicking ok
+			table = (JTable) find(JTable.class, "userTable");
+			find(JPanel.class, "browsePanel");
+			mockUserDao.verify();
+		} catch (Exception e) {
+			fail(e.toString());
+		}
+    	
+    }
+    
+    
     @Test
     public void testDetailsPanel() {
 
@@ -233,6 +320,98 @@ public class MainFrameTest extends JFCTestCase {
 			fail(e.toString());
 		}    	
     }
+ 
+    @Test 
+    public void testDeleteUser() {
+    	try {
+			// prepare user to delete
+			 User expectedUser = new User(new Long(666), "Ozzy", "Osbourne",  LocalDate.now());
+			 mockUserDao.expect("delete", expectedUser);
+			 
+			 // create empty list to simulate deletion
+			 List<User> users = new ArrayList<User>();
+			 mockUserDao.expectAndReturn("findAll", users);
+			 
+			// check the usertable
+			JTable table = (JTable) find(JTable.class, "userTable");
+			assertEquals(1, table.getRowCount());
+			
+			// find delete button
+			JButton deleteButton = (JButton) find(JButton.class, "deleteButton");
+			// select first user
+			getHelper().enterClickAndLeave(new JTableMouseEventData(this, table, 0, 0, 1));
+			// click delete button
+			getHelper().enterClickAndLeave(new MouseEventData(this, deleteButton));
+			
+			
+			// find all the dialogs
+			List<JDialog> showingDialogs = getHelper().getShowingDialogs();
+			
+			// get the first dialog (actually we know that there is just one
+			JDialog dialog = (JDialog)showingDialogs.get(0);
+			Finder buttonFinder = new ComponentFinder(JButton.class);
+			
+			// find ok button
+			JButton okButton = (JButton)buttonFinder.find(dialog, 0);
+			
+			// confirm user deletion
+			getHelper().enterClickAndLeave(new MouseEventData(this, okButton));
+			
+			// check that we returned to the browse panel
+			find(JPanel.class, "browsePanel");
+			table = (JTable) find(JTable.class, "userTable");
+			// check that the user was deleted
+			assertEquals(0, table.getRowCount());
+			mockUserDao.verify();
+			
+		} catch (Exception e) {
+			fail(e.toString());
+		}
+    }
+    
+    @Test 
+    public void testCancelDeleteUser() {
+    	try {
+			 // create empty list to simulate deletion
+			 List<User> users = new ArrayList<User>(this.users);
+			 mockUserDao.expectAndReturn("findAll", users);
+			 
+			// check the usertable
+			JTable table = (JTable) find(JTable.class, "userTable");
+			assertEquals(1, table.getRowCount());
+			
+			// find delete button
+			JButton deleteButton = (JButton) find(JButton.class, "deleteButton");
+			// select first user
+			getHelper().enterClickAndLeave(new JTableMouseEventData(this, table, 0, 0, 1));
+			// click delete button
+			getHelper().enterClickAndLeave(new MouseEventData(this, deleteButton));
+			
+			
+			// find all the dialogs
+			List<JDialog> showingDialogs = (List<JDialog>) getHelper().getShowingDialogs();
+
+			// get the first dialog (actually we know that there is just one
+			JDialog dialog = (JDialog)showingDialogs.get(0);
+			Finder buttonFinder = new ComponentFinder(JButton.class);
+			
+			// find cancel button
+			JButton cancelButton = (JButton)buttonFinder.find(dialog, 1);
+			
+			// cancel user deletion
+			getHelper().enterClickAndLeave(new MouseEventData(this, cancelButton));
+			
+			// check that we returned to the browse panel
+			find(JPanel.class, "browsePanel");
+			table = (JTable) find(JTable.class, "userTable");
+			// check that the user was deleted
+			assertEquals(1, table.getRowCount());
+			mockUserDao.verify();
+			
+		} catch (Exception e) {
+			fail(e.toString());
+		}
+    }    
     
     @After
     protected void tearDown() throws Exception {
@@ -244,7 +423,6 @@ public class MainFrameTest extends JFCTestCase {
 			TestHelper.cleanUp(this);
 			super.tearDown();
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
     }
