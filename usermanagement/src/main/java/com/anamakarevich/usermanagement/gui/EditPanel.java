@@ -7,7 +7,6 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
 import javax.swing.JOptionPane;
-import javax.swing.JTextField;
 
 import com.anamakarevich.usermanagement.User;
 import com.anamakarevich.usermanagement.db.DatabaseException;

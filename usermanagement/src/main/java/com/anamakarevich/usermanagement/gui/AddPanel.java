@@ -19,13 +19,11 @@ import com.anamakarevich.usermanagement.User;
 import com.anamakarevich.usermanagement.db.DatabaseException;
 import com.anamakarevich.usermanagement.util.Messages;
 
-public class AddPanel extends JPanel implements ActionListener {
+public class AddPanel extends StandardPanel implements ActionListener {
 
     private static final long serialVersionUID = 1L;
-    private MainFrame parent;
     private JPanel fieldPanel;
     private JPanel buttonPanel;
-    private JButton okButton;
     private JButton cancelButton;
     private JTextField firstNameField;
     private JTextField lastNameField;
@@ -37,13 +35,10 @@ public class AddPanel extends JPanel implements ActionListener {
      * @param frame - the parent frame to 'host' this panel
      */
     public AddPanel(MainFrame frame) {
-        parent = frame;
+    	super(frame);
         initialize();
     }
     
-    protected MainFrame getParentFrame() {
-    	return parent;
-    }
     
      // Set up the buttons panel and the input fields
     private void initialize() {
@@ -75,16 +70,7 @@ public class AddPanel extends JPanel implements ActionListener {
         }
         return cancelButton;
     }
-    private JButton getOkButton() {
-        if (okButton == null) {
-            okButton = new JButton();
-            okButton.setText(Messages.getString("AddPanel.ok")); //$NON-NLS-1$
-            okButton.setName("okButton"); //$NON-NLS-1$
-            okButton.setActionCommand("ok"); //$NON-NLS-1$
-            okButton.addActionListener(this);
-        }
-        return okButton;
-    }
+
     private JPanel getFieldPanel() {
         if (fieldPanel == null) {
             fieldPanel = new JPanel();
@@ -145,7 +131,7 @@ public class AddPanel extends JPanel implements ActionListener {
                 return;
             }
             try {
-                parent.getDao().create(user);
+                getParentFrame().getDao().create(user);
             } catch (DatabaseException e1) {
                 JOptionPane.showMessageDialog(this, 
                         e1.getMessage(), 
@@ -156,7 +142,7 @@ public class AddPanel extends JPanel implements ActionListener {
         }
         clearFields();
         this.setVisible(false);
-        parent.showBrowsePanel();
+        getParentFrame().showBrowsePanel();
     }
 
     protected void clearFields() {

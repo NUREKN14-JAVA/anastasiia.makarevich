@@ -160,7 +160,6 @@ public class BrowsePanel extends JPanel implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         String actionCommand = e.getActionCommand();
-        // check if the add button was clicked
         if ("add".equalsIgnoreCase(actionCommand)){ //$NON-NLS-1$
         	// hide browse panel and show add panel instead
             this.setVisible(false);
@@ -169,23 +168,40 @@ public class BrowsePanel extends JPanel implements ActionListener {
         }
         if("edit".equalsIgnoreCase(actionCommand)) { //$NON-NLS-1$
         	
-            // get the index of the selected row
-            int selectedRow = userTable.getSelectedRow();
-            
-            // if the user clicked ok without selecting anything
-            if (selectedRow == -1) {
-                JOptionPane.showMessageDialog(this, "Select a user, please",
-                        "Error", JOptionPane.INFORMATION_MESSAGE);
-                return;
+            User user = getSelectedUser();
+            if (user ==null) {
+            	return;
             }
-            // get the user from the table
-            User user = ((UserTableModel) userTable.getModel()).getUserByRow(selectedRow);
-            // hide browse panel
             this.setVisible(false);
             parent.showEditPanel(user);
         }
+        if("details".equalsIgnoreCase(actionCommand)) {
+        	User user = getSelectedUser();
+        	if (user == null) {
+        		return;
+        	}
+        	this.setVisible(false);
+        	parent.showDetailsPanel(user);
+        }
         
     }
+
+	private User getSelectedUser() {
+		// get the index of the selected row
+		int selectedRow = userTable.getSelectedRow();
+		
+		// if the user clicked ok without selecting anything
+		if (selectedRow == -1) {
+		    JOptionPane.showMessageDialog(this, "Select a user, please",
+		            "Error", JOptionPane.INFORMATION_MESSAGE);
+		    return null;
+		}
+		// get the user from the table
+		User user = ((UserTableModel) userTable.getModel()).getUserByRow(selectedRow);
+		// hide browse panel
+		return user;
+	}
+    
 
     
 }
