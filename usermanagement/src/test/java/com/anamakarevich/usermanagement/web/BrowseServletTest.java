@@ -12,7 +12,6 @@ import org.junit.Test;
 
 import com.anamakarevich.usermanagement.User;
 
-import javax.servlet.http.HttpServlet;
 
 public class BrowseServletTest extends MockServletTestCase {
 
@@ -23,12 +22,12 @@ public class BrowseServletTest extends MockServletTestCase {
 	}
 	
 	@Test
-	public void testBrowse() {
+	public void testBrowse1() {
 		User user = new User(666L, "Ozzy", "Osbourne", LocalDate.now());
-		List list = Collections.singletonList(user);
+		List<User> list = Collections.singletonList(user);
 		getMockUserDao().expectAndReturn("findAll", list);
 		doGet();
-		Collection collection = (Collection) getWebMockObjectFactory().getMockSession().getAttribute("users");
+		Collection<?> collection = (Collection<?>) getWebMockObjectFactory().getMockSession().getAttribute("users");
 		assertNotNull("Could not find collection of users in session", collection);
 		assertSame(list,collection);
 	}

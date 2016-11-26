@@ -12,6 +12,11 @@ import com.anamakarevich.usermanagement.db.DaoFactory;
 import com.anamakarevich.usermanagement.db.DatabaseException;
 
 public class BrowseServlet extends HttpServlet {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	@Override
 	protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		// TODO Auto-generated method stub
@@ -19,7 +24,7 @@ public class BrowseServlet extends HttpServlet {
 	}
 
 	private void browse(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		Collection users;
+		Collection<?> users;
 		try {
 			users = DaoFactory.getInstance().getUserDao().findAll();
 			req.getSession().setAttribute("users", users);

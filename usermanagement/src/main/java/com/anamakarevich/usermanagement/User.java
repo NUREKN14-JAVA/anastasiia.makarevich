@@ -1,7 +1,6 @@
 package com.anamakarevich.usermanagement;
 
 import java.time.LocalDate;
-import java.util.Date;
 
 /**
  * @author ana_makarevich

@@ -13,7 +13,8 @@ import java.util.LinkedList;
 import com.anamakarevich.usermanagement.User;
 
 class HsqldbUserDao implements UserDao {
-
+    
+    
     // Constants for SQL queries
     private static final String INSERT_QUERY = "INSERT INTO users (firstname, lastname, dateofbirth) VALUES (?, ?, ?)";
     private static final String UPDATE_QUERY = "UPDATE users SET firstname=?, lastname=?, dateofbirth=? WHERE id=?";
@@ -69,7 +70,7 @@ class HsqldbUserDao implements UserDao {
             keys.close();
             callableStatement.close();
             preparedStatement.close();
-            connection.close();
+            connection.close();            
 
             
         } catch (DatabaseException e) {
@@ -178,10 +179,10 @@ class HsqldbUserDao implements UserDao {
     @Override
     public Collection<?> findAll() throws DatabaseException {
         
-        Connection connection = connectionFactory.createConnection();
         
         Collection<User> result = new LinkedList<User>();
         try {
+            Connection connection = connectionFactory.createConnection();
             Statement statement = connection.createStatement();
             ResultSet allUsers = statement.executeQuery(SELECT_QUERY);
             while (allUsers.next()) {
