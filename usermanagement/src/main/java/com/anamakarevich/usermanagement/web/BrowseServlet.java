@@ -18,6 +18,9 @@ public class BrowseServlet extends HttpServlet {
 
 	@Override
 	protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+	    
+	    // check if any button was clicked, and if it was then 
+	    // execute the appropriate operation
 	    if (req.getParameter("addButton") != null) {
 	        add(req, resp);
 	        return;
@@ -37,6 +40,13 @@ public class BrowseServlet extends HttpServlet {
 		browse(req, resp);
 	}
 
+	/**
+	 * Redirects to the details page for the chosen user
+	 * @param req - request that contains user id
+	 * @param resp
+	 * @throws ServletException
+	 * @throws IOException
+	 */
 	private void details(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String idStr = req.getParameter("id");
         if (idStr == null || idStr.trim().length() == 0) {
@@ -56,6 +66,13 @@ public class BrowseServlet extends HttpServlet {
         
     }
 
+	/**
+	 * Deletes user from database and dipatches the browse page
+	 * @param req - request with the user id
+	 * @param resp
+	 * @throws ServletException
+	 * @throws IOException
+	 */
     private void delete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String idStr = req.getParameter("id");
         if (idStr == null || idStr.trim().length() == 0) {
@@ -72,9 +89,15 @@ public class BrowseServlet extends HttpServlet {
             req.setAttribute("error","ERROR:" + e.toString());            
         }
         browse(req,resp);
-        
     }
 
+    /**
+     * Redirects to the edit page for the chosen user
+     * @param req
+     * @param resp
+     * @throws ServletException
+     * @throws IOException
+     */
     private void edit(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String idStr = req.getParameter("id");
         // check if the id was passed with the request
@@ -97,6 +120,13 @@ public class BrowseServlet extends HttpServlet {
         req.getRequestDispatcher("/edit").forward(req, resp);
     }
 
+    /**
+     * Redirects to the add page  
+     * @param req
+     * @param resp
+     * @throws ServletException
+     * @throws IOException
+     */
     private void add(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.getRequestDispatcher("/add").forward(req, resp);
         

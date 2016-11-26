@@ -18,9 +18,9 @@ import com.anamakarevich.usermanagement.db.DatabaseException;
 public class EditServlet extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
-
+    
     @Override
-    protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException { 
+    protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         if (req.getParameter("okButton") != null) {
             doOk(req, resp);
             return;
@@ -32,18 +32,36 @@ public class EditServlet extends HttpServlet {
         showPage(req,resp);
     }
 
-
+    /**
+     * gets request dispatcher at path /edit.jsp, wraps into RequestDispatcher object and forward the request
+     * @param req - original request object
+     * @param resp - response object
+     * @throws ServletException
+     * @throws IOException
+     */
     protected void showPage(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.getRequestDispatcher("/edit.jsp").forward(req, resp);
-        
     }
 
-
+    /**
+     * Redirects to the original brows page without making any changes to the database
+     * @param req - original request
+     * @param resp - response object
+     * @throws ServletException
+     * @throws IOException
+     */
     private void doCancel(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.getRequestDispatcher("/browse.jsp").forward(req, resp);
         
     }
 
+    /**
+     * Extract user from request, processes it and show the browse page again
+     * @param req - original request with user data in it
+     * @param resp - response object
+     * @throws ServletException
+     * @throws IOException
+     */
     private void doOk(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         User user;
         try {
@@ -53,7 +71,6 @@ public class EditServlet extends HttpServlet {
             showPage(req,resp);
             return;
         }
-        
         try {
             processUser(user);
         } catch (DatabaseException e) {
@@ -63,28 +80,42 @@ public class EditServlet extends HttpServlet {
         req.getRequestDispatcher("/browse").forward(req, resp);
     }
 
+    /**
+     * Extract user from request
+     * @param req - original request
+     * @return - selected user
+     * @throws ValidationException
+     */
     private User getUser(HttpServletRequest req) throws ValidationException {
         User user = new User();
+        
+        // extract values from request
         String idStr = req.getParameter("id");
         String firstName = req.getParameter("firstName");
         String lastName = req.getParameter("lastName");
         String dateStr = req.getParameter("date");
         
-        if (firstName == null) {
+        // check if the user filled in all the field
+        if (firstName == null || firstName.isEmpty()) {
             throw new ValidationException("First name is empty");
         }
-        if (lastName == null) {
+        if (lastName == null || lastName.isEmpty()) {
             throw new ValidationException("Last name is empty");
         }
-        if (dateStr == null) {
+        if (dateStr == null || dateStr.isEmpty()) {
             throw new ValidationException("Date is empty");
         }
-
+        
+        // check the id was found
         if (idStr != null) {
             user.setId(new Long(idStr));
         }
+        
+        // set user's fields
         user.setFirstName(firstName);
         user.setLastName(lastName);
+        
+        // try to parse date and if we faile then inform user
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
         try {
             user.setDateOfBirthd(LocalDate.parse(dateStr,formatter));
@@ -94,7 +125,12 @@ public class EditServlet extends HttpServlet {
         }
         return user;
     }
-
+    
+    /**
+     * Execute the appropriate database operation
+     * @param user - user to be processed
+     * @throws DatabaseException
+     */
     protected void processUser(User user) throws DatabaseException {
         DaoFactory.getInstance().getUserDao().update(user);
     }
