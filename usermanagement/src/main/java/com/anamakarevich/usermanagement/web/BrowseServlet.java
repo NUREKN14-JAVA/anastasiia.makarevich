@@ -19,6 +19,7 @@ public class BrowseServlet extends HttpServlet {
 	@Override
 	protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 	    if (req.getParameter("addButton") != null) {
+	        System.out.println("add clicked");
 	        add(req, resp);
 	        return;
 	    }
@@ -70,7 +71,7 @@ public class BrowseServlet extends HttpServlet {
     }
 
     private void add(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        // TODO Auto-generated method stub
+        req.getRequestDispatcher("/add").forward(req, resp);
         
     }
 
