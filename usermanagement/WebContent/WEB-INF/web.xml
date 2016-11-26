@@ -5,13 +5,18 @@
     xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
     
     <servlet>
-    <servlet-name>Browse Servlet</servlet-name>
-    <servlet-class>com.anamakarevich.usermanagement.web.BrowseServlet</servlet-class>
+        <servlet-name>Browse Servlet</servlet-name>
+        <servlet-class>com.anamakarevich.usermanagement.web.BrowseServlet</servlet-class>
     </servlet>
     
     <servlet-mapping>
-    <servlet-name>Browse Servlet</servlet-name>
-    <url-pattern>/browse</url-pattern>
+        <servlet-name>Browse Servlet</servlet-name>
+        <url-pattern>/browse</url-pattern>
+    </servlet-mapping>
+    
+    <servlet-mapping>
+        <servlet-name>Browse Servlet</servlet-name>
+        <url-pattern></url-pattern>
     </servlet-mapping>
 </web-app>
 
