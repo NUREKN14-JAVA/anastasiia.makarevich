@@ -3,6 +3,7 @@ package com.anamakarevich.usermanagement.web;
 import static org.junit.Assert.*;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -42,6 +43,24 @@ public class BrowseServletTest extends MockServletTestCase {
 	    User userInSession = (User) getWebMockObjectFactory().getMockSession().getAttribute("user");
 	    assertNotNull("Could not find user in session", user);
 	    assertSame(user, userInSession);
+	    
+	}
+	@Test
+	public void testDelete() {
+	       User user = new User(666L, "Ozzy", "Osbourne", LocalDate.now());
+	       getMockUserDao().expectAndReturn("find", 666L, user);
+	       getMockUserDao().expect("delete", user);
+	       List<User> list = new ArrayList<User>();
+	       getMockUserDao().expectAndReturn("findAll", list);
+	       addRequestParameter("deleteButton", "Delete");
+	       addRequestParameter("id", "666");
+	       doPost();
+	       String deletionResult = (String) getWebMockObjectFactory().getMockSession().getAttribute("result");
+	       assertNotNull("Deletion failed", deletionResult);
+	       assertSame("ok", deletionResult);
+	       List<User> users = (List<User>) getWebMockObjectFactory().getMockSession().getAttribute("users");
+	       assertNotNull("Couldn't find users in session", users);
+	       assertSame(list,users);
 	    
 	}
 
