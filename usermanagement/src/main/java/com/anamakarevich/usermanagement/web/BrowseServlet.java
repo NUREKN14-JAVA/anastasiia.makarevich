@@ -1,7 +1,6 @@
 package com.anamakarevich.usermanagement.web;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.Collection;
 
 import javax.servlet.ServletException;
@@ -39,7 +38,21 @@ public class BrowseServlet extends HttpServlet {
 	}
 
 	private void details(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        // TODO Auto-generated method stub
+        String idStr = req.getParameter("id");
+        if (idStr == null || idStr.trim().length() == 0) {
+            req.setAttribute("error","You must select a user");
+            req.getRequestDispatcher("/browse.jsp").forward(req,  resp);
+            return;
+        }
+        try {
+            User user = DaoFactory.getInstance().getUserDao().find(new Long(idStr));
+            req.getSession().setAttribute("user", user);
+        } catch (Exception e) {
+            req.setAttribute("error","ERROR:" + e.toString());
+            req.getRequestDispatcher("/browse.jsp").forward(req, resp);
+            return;
+        }
+        req.getRequestDispatcher("/details").forward(req, resp);
         
     }
 
@@ -56,7 +69,7 @@ public class BrowseServlet extends HttpServlet {
             req.getSession().setAttribute("result", "ok");
         }
         catch (Exception e) {
-            req.setAttribute("error","ERROR:" + e.toString());
+            req.setAttribute("error","ERROR:" + e.toString());            
         }
         browse(req,resp);
         
