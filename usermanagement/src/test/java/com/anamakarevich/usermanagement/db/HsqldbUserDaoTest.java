@@ -1,5 +1,6 @@
 package com.anamakarevich.usermanagement.db;
 
+import java.io.File;
 import java.time.LocalDate;
 import java.util.Collection;
 
@@ -7,6 +8,7 @@ import org.dbunit.DatabaseTestCase;
 import org.dbunit.database.DatabaseConnection;
 import org.dbunit.database.IDatabaseConnection;
 import org.dbunit.dataset.IDataSet;
+import org.dbunit.dataset.xml.FlatXmlDataSet;
 import org.dbunit.dataset.xml.XmlDataSet;
 import org.junit.Before;
 import org.junit.Test;
@@ -80,6 +82,17 @@ public class HsqldbUserDaoTest extends DatabaseTestCase {
         }
     }
     
+    @Test 
+    public void testFindByName() {
+        try {
+            Collection<User> users = (Collection<User>) dao.find("Mick", "Jagger");
+            assertEquals("Collection size is incorrect.",1,users.size());
+            
+        } catch (DatabaseException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+    }
     
     @Test
     public void testDelete() {
@@ -148,7 +161,7 @@ public class HsqldbUserDaoTest extends DatabaseTestCase {
     @Override
     protected IDatabaseConnection getConnection() throws Exception {
         connectionFactory = new ConnectionFactoryImpl("org.hsqldb.jdbcDriver", 
-                "jdbc:hsqldb:file:db/usermanagement;hsqldb.nio_data_file=false;hsqldb.lock_file=false", 
+                "jdbc:hsqldb:file:db/usermanagement", 
                 "sa",
                 "");
         return new DatabaseConnection(connectionFactory.createConnection());
@@ -156,9 +169,8 @@ public class HsqldbUserDaoTest extends DatabaseTestCase {
 
     @Override
     protected IDataSet getDataSet() throws Exception {
-        IDataSet dataSet = new XmlDataSet(getClass().
-                getClassLoader().
-                getResourceAsStream("usersDataSet.xml"));
+        IDataSet dataSet = new XmlDataSet(this.getClass().getClassLoader()
+                .getResourceAsStream("usersDataSet.xml"));
         return dataSet;
     }
     

@@ -47,6 +47,15 @@ public interface UserDao {
     User find(Long id) throws DatabaseException;
     
     /**
+     * Looks up the users with the given first name and last name in the database
+     * Note that it returns a collection even if there is only one user found.
+     * @param firstName
+     * @param lastName
+     * @return - collection of users with requested first name and last name
+     */
+    public Collection<?> find(String firstName, String lastName) throws DatabaseException;
+    
+    /**
      * Selects all the users from the database and returns them as collection of users
      * @return Collection of users
      * @throws DatabaseException if the connection to database failed
@@ -57,6 +66,7 @@ public interface UserDao {
      * Sets the connection factory to use for creating connection to the database
      * @param connectionFactory
      */
+    
     void setConnectionFactory(ConnectionFactory connectionFactory);
 
     
