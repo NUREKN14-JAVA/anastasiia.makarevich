@@ -12,15 +12,14 @@ import com.anamakarevich.usermanagement.util.Messages;
 public class UserTableModel extends AbstractTableModel {
 
     private static final long serialVersionUID = 1L;
-    List<?> users = null;
+    List users = null;
     String[] COLUMN_NAMES = {
             Messages.getString("UserTableModel.id"), 
             Messages.getString("UserTableModel.first_name"), 
             Messages.getString("UserTableModel.last_name")}; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
     Class<?>[] COLUMN_CLASSES = {Long.class, String.class, String.class};
     
-    @SuppressWarnings("unchecked")
-    public UserTableModel(Collection<?> collection) {
+    public UserTableModel(Collection collection) {
         this.users = new ArrayList(collection);
         
     }
@@ -59,8 +58,16 @@ public class UserTableModel extends AbstractTableModel {
        return COLUMN_NAMES[columnIndex];
        
    }
-public User getUserByRow(int selectedRow) {
-	return (User) users.get(selectedRow);
-}
+   public User getUserByRow(int selectedRow) {
+       return (User) users.get(selectedRow);
+       }
+   
+   public void addUsers(Collection users) {
+       this.users.addAll(users);
+       }
+   
+   public void clearUsers() {
+       users = new ArrayList();
+       }
 
 }

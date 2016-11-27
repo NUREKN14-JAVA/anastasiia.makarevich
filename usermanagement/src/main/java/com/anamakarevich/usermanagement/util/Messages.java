@@ -15,6 +15,7 @@ public class Messages {
         try {
             return RESOURCE_BUNDLE.getString(key);
         } catch (MissingResourceException e) {
+            System.out.println("here");
             return '!' + key + '!';
         }
     }
